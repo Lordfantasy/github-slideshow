@@ -33,20 +33,26 @@
 
   /* ---------- 2. navigazione ---------- */
   var nav = $("#nav"), burger = $("#burger"), drawer = $("#drawer");
+  function setDrawer(open) {
+    drawer.classList.toggle("open", open);
+    nav.classList.toggle("open", open);
+    document.body.classList.toggle("is-locked", open);
+    burger.setAttribute("aria-expanded", String(open));
+    /* chiuso, il cassetto esce dall'ordine di tabulazione: altrimenti si
+       naviga dentro a un menu invisibile */
+    drawer.toggleAttribute("inert", !open);
+    drawer.setAttribute("aria-hidden", String(!open));
+    if (open) { var first = drawer.querySelector("a"); if (first) first.focus(); }
+    else burger.focus();
+  }
+
   if (burger) {
-    burger.addEventListener("click", function () {
-      var open = drawer.classList.toggle("open");
-      nav.classList.toggle("open", open);
-      document.body.classList.toggle("is-locked", open);
-      burger.setAttribute("aria-expanded", String(open));
-    });
+    burger.addEventListener("click", function () { setDrawer(!drawer.classList.contains("open")); });
     $$("#drawer a").forEach(function (a) {
-      a.addEventListener("click", function () {
-        drawer.classList.remove("open");
-        nav.classList.remove("open");
-        document.body.classList.remove("is-locked");
-        burger.setAttribute("aria-expanded", "false");
-      });
+      a.addEventListener("click", function () { setDrawer(false); });
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && drawer.classList.contains("open")) setDrawer(false);
     });
   }
 

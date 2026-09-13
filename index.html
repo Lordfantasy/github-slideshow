@@ -25,6 +25,8 @@
   </div>
 </div>
 
+<a class="skip-link" href="#contenuto">Vai al contenuto</a>
+
 <div class="progress" id="progress"></div>
 
 <!-- ============ NAV ============ -->
@@ -47,7 +49,7 @@
   <button class="burger" id="burger" aria-label="Apri il menu" aria-expanded="false"><span></span><span></span></button>
 </nav>
 
-<div class="drawer" id="drawer">
+<div class="drawer" id="drawer" aria-hidden="true" inert>
   <a href="#origine">Origine</a>
   <a href="#storia">Storia</a>
   <a href="#mano">Fatto a mano</a>
@@ -57,6 +59,7 @@
 </div>
 
 <!-- ============ HERO ============ -->
+<main id="contenuto" tabindex="-1">
 <header class="hero" id="top">
   <div class="wrap hero-grid">
     <div>
@@ -79,7 +82,7 @@
 
     <div class="hero-stage">
       <div class="halo"></div>
-      <div class="stage3d" id="hero3d">
+      <div class="stage3d" id="hero3d" tabindex="0" role="img" aria-label="Modello tridimensionale del sandalo due occhi. Usa le frecce sinistra e destra per girarlo.">
         <div class="loading3d">Carico il modello <b>0%</b></div>
       </div>
       <!-- disegno di riserva, se il 3D non parte -->
@@ -345,7 +348,7 @@
 
     <div class="split">
       <div class="config-stage reveal">
-        <div class="stage3d" id="cfg3d">
+        <div class="stage3d" id="cfg3d" tabindex="0" role="img" aria-label="Anteprima tridimensionale del sandalo configurato. Usa le frecce sinistra e destra per girarlo.">
           <div class="loading3d">Carico il modello <b>0%</b></div>
         </div>
         <svg id="cfgSandal" viewBox="0 0 400 640" aria-label="Anteprima del sandalo configurato">
@@ -465,6 +468,8 @@
   </div>
 </section>
 
+</main>
+
 <!-- ============ FOOTER ============ -->
 <footer id="contatti">
   <div class="wrap">
@@ -475,13 +480,13 @@
         <p style="margin-top:1.6rem"><a class="btn light" href="https://eurekatheoriginal.it/" target="_blank" rel="noopener"><span>Sito ufficiale</span></a></p>
       </div>
       <div class="foot-col reveal" data-d="1">
-        <h5>Dove</h5>
+        <h4>Dove</h4>
         <p>Montegranaro (FM)</p>
         <p>Marche · Italia</p>
         <p>Distretto calzaturiero</p>
       </div>
       <div class="foot-col reveal" data-d="2">
-        <h5>Naviga</h5>
+        <h4>Naviga</h4>
         <a href="#origine">Origine</a>
         <a href="#storia">La nostra storia</a>
         <a href="#mano">Fatto a mano</a>

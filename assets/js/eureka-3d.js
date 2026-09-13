@@ -152,6 +152,17 @@
     el.addEventListener("pointerup", end);
     el.addEventListener("pointercancel", end);
 
+    /* si gira anche da tastiera: trascinare non e' l'unico modo */
+    el.addEventListener("keydown", function (e) {
+      var step = 0.28;
+      if (e.key === "ArrowLeft") self.targetY -= step;
+      else if (e.key === "ArrowRight") self.targetY += step;
+      else return;
+      e.preventDefault();
+      self.velocity = 0;
+      self.needsRender = true;
+    });
+
     /* fuori dal trascinamento il sandalo segue chi guarda, come facevano gli occhi */
     if (!RM && this.opts.followPointer) {
       window.addEventListener("pointermove", function (e) {
@@ -187,6 +198,7 @@
     if (!this.visible || document.hidden) return;
     if (RM) {
       if (!this.needsRender) return;
+      this.pivot.rotation.y = this.targetY;   /* le frecce funzionano anche senza animazioni */
       this.renderer.render(this.scene, this.camera);
       this.needsRender = false;
       return;
