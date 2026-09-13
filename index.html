@@ -1,13 +1,507 @@
----
-layout: presentation
----
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Eureka the original — L'originale sandalo due occhi dal 1878</title>
+<meta name="description" content="Dal 1878 il sandalo due occhi: cucito a mano con lavorazione IDEAL nel distretto calzaturiero di Montegranaro. La storia, il gesto artigiano, la collezione.">
+<meta name="theme-color" content="#14100C">
+<meta property="og:title" content="Eureka the original — L'originale sandalo due occhi">
+<meta property="og:description" content="Dal 1878. Cucito a mano, una paia alla volta, con lavorazione IDEAL.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="assets/css/eureka.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%2314100C'/%3E%3Ccircle cx='14' cy='20' r='5' fill='%23D9A441'/%3E%3Ccircle cx='26' cy='20' r='5' fill='%23D9A441'/%3E%3C/svg%3E">
+</head>
+<body>
 
-{% for post in site.posts reversed %}
-	{% include slide.html %}
-	<div class="page-break"></div>
-{% endfor %}
-{% unless site.simple-slideshow %}
-{% if site.overview %}
-<section id="overview" class="step" {% for attr in site.overview-data %} data-{{attr[0]}}="{{attr[1]}}"{% endfor %}></section>
-{% endif %}
-{% endunless %}
+<!-- ============ PRELOADER: il laccio si allaccia ============ -->
+<div id="loader">
+  <div class="loader-in">
+    <svg viewBox="0 0 260 120" aria-hidden="true">
+      <path id="loaderLace" class="lace-draw"
+            d="M20 92 C 60 92 52 28 92 28 C 132 28 124 92 164 92 C 204 92 196 28 240 28"/>
+    </svg>
+    <div class="loader-word">Eureka</div>
+  </div>
+</div>
+
+<div class="progress" id="progress"></div>
+
+<!-- ============ NAV ============ -->
+<nav class="nav" id="nav">
+  <a class="brand" href="#top" aria-label="Eureka, torna in cima">
+    <svg viewBox="0 0 40 40" aria-hidden="true">
+      <circle cx="13" cy="20" r="6" fill="none" stroke="currentColor" stroke-width="2.2"/>
+      <circle cx="27" cy="20" r="6" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    </svg>
+    <span>Eureka<small>the original · 1878</small></span>
+  </a>
+  <div class="nav-links">
+    <a href="#origine">Origine</a>
+    <a href="#storia">Storia</a>
+    <a href="#mano">Fatto a mano</a>
+    <a href="#collezioni">Collezioni</a>
+    <a href="#configura">Configura</a>
+  </div>
+  <a class="nav-cta" href="#contatti">Contatti</a>
+  <button class="burger" id="burger" aria-label="Apri il menu" aria-expanded="false"><span></span><span></span></button>
+</nav>
+
+<div class="drawer" id="drawer">
+  <a href="#origine">Origine</a>
+  <a href="#storia">Storia</a>
+  <a href="#mano">Fatto a mano</a>
+  <a href="#collezioni">Collezioni</a>
+  <a href="#configura">Configura</a>
+  <a href="#contatti">Contatti</a>
+</div>
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Milano 1878 · Montegranaro oggi</p>
+      <h1>
+        <span class="ln"><span>Due</span></span>
+        <span class="ln"><span class="ital">occhi,</span></span>
+        <span class="ln"><span>un secolo.</span></span>
+      </h1>
+      <p class="lead hero-sub">
+        Il sandalo che ha imparato a camminare prima di noi. Nato da una forma in legno
+        disegnata con un pediatra, cucito a mano una paia alla volta — <em class="acc">ancora oggi</em>.
+      </p>
+      <div class="hero-meta">
+        <div>Anno zero<b>1878</b></div>
+        <div>Lavorazione<b>Ideal</b></div>
+        <div>Fatte a mano<b>100%</b></div>
+      </div>
+    </div>
+
+    <div class="hero-stage">
+      <div class="halo"></div>
+      <!-- sandalo due occhi, vista dall'alto -->
+      <svg class="sandal" id="heroSandal" viewBox="0 0 400 640" aria-label="Il sandalo due occhi Eureka">
+        <ellipse cx="200" cy="616" rx="120" ry="16" fill="rgba(20,16,12,.16)"/>
+        <!-- suola -->
+        <path d="M200 18 C276 18 322 70 324 142 C326 214 300 252 292 302 C284 352 288 398 293 444 C301 514 266 604 200 604 C134 604 99 514 107 444 C112 398 116 352 108 302 C100 252 74 214 76 142 C78 70 124 18 200 18Z"
+              fill="#C9A57C"/>
+        <path d="M200 30 C270 30 312 78 314 144 C316 210 291 250 283 300 C275 350 279 398 284 444 C291 508 260 592 200 592 C140 592 109 508 116 444 C121 398 125 350 117 300 C109 250 84 210 86 144 C88 78 130 30 200 30Z"
+              fill="#E3CBA9"/>
+        <!-- cuciture perimetrali -->
+        <path d="M200 44 C262 44 302 86 304 146 C306 206 283 248 275 298 C267 348 271 398 276 444 C282 502 254 578 200 578 C146 578 118 502 124 444 C129 398 133 348 125 298 C117 248 94 206 96 146 C98 86 138 44 200 44Z"
+              fill="none" stroke="#8B5A2B" stroke-width="2" stroke-dasharray="9 8" stroke-linecap="round" opacity=".65"/>
+        <!-- tomaia in punta -->
+        <path d="M200 22 C276 22 322 72 324 142 C325 182 314 212 305 240 C271 256 236 262 200 262 C164 262 129 256 95 240 C86 212 75 182 76 142 C78 72 124 22 200 22Z"
+              fill="#A8622F"/>
+        <path d="M200 34 C268 34 312 80 314 144 C315 180 305 208 297 232 C266 246 234 251 200 251 C166 251 134 246 103 232 C95 208 85 180 86 144 C88 80 132 34 200 34Z"
+              fill="#B96F37"/>
+        <path d="M104 236 C140 250 170 256 200 256 C230 256 260 250 296 236"
+              fill="none" stroke="#5E3313" stroke-width="2" stroke-dasharray="8 7" stroke-linecap="round" opacity=".7"/>
+        <!-- GLI OCCHI -->
+        <g id="eyes">
+          <circle cx="162" cy="140" r="27" fill="#2A1B10"/>
+          <circle cx="238" cy="140" r="27" fill="#2A1B10"/>
+          <g id="pupils">
+            <circle class="pupil" data-cx="162" data-cy="140" cx="162" cy="140" r="10" fill="#F7F2E9"/>
+            <circle class="pupil" data-cx="238" data-cy="140" cx="238" cy="140" r="10" fill="#F7F2E9"/>
+          </g>
+          <g id="lids">
+            <path class="lid" d="M135 140 a27 27 0 0 1 54 0 Z" fill="#B96F37" transform="scale(1 0.001)" transform-origin="162px 140px"/>
+            <path class="lid" d="M211 140 a27 27 0 0 1 54 0 Z" fill="#B96F37" transform="scale(1 0.001)" transform-origin="238px 140px"/>
+          </g>
+        </g>
+        <!-- cinturino + fibbia -->
+        <g>
+          <path d="M96 330 C150 314 250 314 304 330 L304 372 C250 356 150 356 96 372 Z" fill="#8B5A2B"/>
+          <path d="M104 336 C154 322 246 322 296 336" fill="none" stroke="#E3CBA9" stroke-width="1.6" stroke-dasharray="7 6" opacity=".6"/>
+          <rect x="286" y="322" width="34" height="58" rx="7" fill="none" stroke="#D9A441" stroke-width="7"/>
+          <line x1="303" y1="326" x2="303" y2="376" stroke="#D9A441" stroke-width="5" stroke-linecap="round"/>
+        </g>
+        <!-- laccetto vivo, fissato a due occhielli -->
+        <circle cx="120" cy="498" r="7" fill="#5E3313"/>
+        <circle cx="280" cy="498" r="7" fill="#5E3313"/>
+        <path data-lace data-x0="120" data-x1="280" data-y="498" data-amp="17" data-k="2.3" data-speed="0.0019"
+              stroke="#C2402A" stroke-width="5" opacity=".95"/>
+      </svg>
+    </div>
+  </div>
+  <div class="scroll-hint"><span>Scorri</span><i></i></div>
+</header>
+
+<!-- ============ CUCITURA 1 ============ -->
+<div class="seam" data-seam><svg viewBox="0 0 1200 200" preserveAspectRatio="none" aria-hidden="true">
+  <path class="stitch" data-stitch d="M0 100 C 200 40 300 160 500 100 C 700 40 800 160 1000 100 C 1100 70 1150 90 1200 100"/>
+  <path class="thread" data-thread d="M0 100 C 200 40 300 160 500 100 C 700 40 800 160 1000 100 C 1100 70 1150 90 1200 100"/>
+  <g class="needle" data-needle><path d="M-14 0 L14 0" stroke="#14100C" stroke-width="3" stroke-linecap="round"/><circle cx="14" cy="0" r="4" fill="#D9A441"/></g>
+</svg></div>
+
+<!-- ============ MANIFESTO ============ -->
+<section class="manifesto" id="origine">
+  <div class="wrap split">
+    <div class="reveal">
+      <p class="eyebrow">L'origine</p>
+      <h2>Un'idea<br>così nuova<br><span class="ital" style="font-style:italic;color:var(--leather)">da gridarlo.</span></h2>
+    </div>
+    <div class="reveal" data-d="2">
+      <p class="big-quote">«Eureka!» — lo dicevano i clienti, non il pubblicitario. Il nome del marchio è nato dalla meraviglia della gente.</p>
+      <p class="lead" style="margin-top:1.8rem">
+        Nel 1878, a Milano, Mario Forzinetti chiese a un illustre pediatra dell'epoca di disegnare
+        una forma in legno che rispettasse davvero il piede di un bambino. Da quella forma nacque
+        un sandalo con due piccole aperture sulla punta: due occhi che lasciano respirare il piede
+        e guardano avanti.
+      </p>
+      <div class="pill-row">
+        <span class="pill">Forma in legno</span>
+        <span class="pill">Lavorazione Ideal</span>
+        <span class="pill">Pelli di prima scelta</span>
+        <span class="pill">Montaggio a mano</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STORIA ============ -->
+<section class="story dark" id="storia">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">La nostra storia</p>
+      <h2 style="max-width:14ch">Centoquarantasette anni, un filo solo.</h2>
+    </div>
+
+    <div class="timeline" id="timeline">
+      <div class="rail"><svg viewBox="0 0 60 1000" preserveAspectRatio="none" aria-hidden="true">
+        <path id="tlThread" class="tl-thread" d="M30 0 C 8 120 52 240 30 360 C 8 480 52 600 30 720 C 8 840 46 930 30 1000"/>
+      </svg></div>
+
+      <article class="node reveal">
+        <span class="tag">Milano</span>
+        <span class="yr">1878</span>
+        <h3>Nasce l'Antica Calzoleria Eureka</h3>
+        <p>Dalla passione della famiglia Forzinetti. Mario Forzinetti commissiona a un illustre pediatra una forma in legno con tutti i requisiti del piede infantile: è il primo gesto di un metodo che non è mai cambiato.</p>
+      </article>
+
+      <article class="node reveal">
+        <span class="tag">Il gesto</span>
+        <span class="yr">Ideal</span>
+        <h3>Due occhietti sulla punta</h3>
+        <p>La tomaia si apre in due piccoli occhi: il piede respira, la pelle si adatta, la scarpa accompagna la crescita. Negli anni gli occhi diventeranno anche cuori e stelle — ma la mano che li taglia resta la stessa.</p>
+      </article>
+
+      <article class="node reveal">
+        <span class="tag">Montegranaro (FM)</span>
+        <span class="yr">Anni 70</span>
+        <h3>I fratelli Medori raccolgono il filo</h3>
+        <p>L'azienda passa alla famiglia Medori, nel cuore del distretto calzaturiero marchigiano. Andrea e Mauro rilanciano il sandalo senza toccarne l'anima: stessa costruzione, stessa lentezza, stessa cura.</p>
+      </article>
+
+      <article class="node reveal">
+        <span class="tag">Oggi</span>
+        <span class="yr">Ora</span>
+        <h3>2.000 metri quadri di mani</h3>
+        <p>Uno stabilimento nel centro di Montegranaro, dieci artigiani, circa duecento paia al giorno di costruzione «ideale». Nessun robot ha mai imparato a fare questo nodo.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FIBBIA CHE SI APRE ============ -->
+<div class="buckle-break">
+  <svg class="buckle" id="buckle" viewBox="0 0 420 120" aria-hidden="true">
+    <g class="strapL">
+      <path d="M0 40 L196 40 L196 80 L0 80 Z" fill="#8B5A2B"/>
+      <path d="M8 50 L188 50" stroke="#E3CBA9" stroke-width="1.6" stroke-dasharray="7 6" opacity=".65"/>
+      <path d="M8 70 L188 70" stroke="#E3CBA9" stroke-width="1.6" stroke-dasharray="7 6" opacity=".65"/>
+    </g>
+    <g class="strapR">
+      <path d="M240 40 L420 40 L420 80 L240 80 Z" fill="#A8622F"/>
+      <circle cx="286" cy="60" r="7" fill="#14100C" opacity=".55"/>
+      <circle cx="330" cy="60" r="7" fill="#14100C" opacity=".55"/>
+      <circle cx="374" cy="60" r="7" fill="#14100C" opacity=".55"/>
+    </g>
+    <rect x="186" y="26" width="64" height="68" rx="12" fill="none" stroke="#D9A441" stroke-width="9"/>
+    <g class="prong"><path d="M196 60 L268 60" stroke="#D9A441" stroke-width="8" stroke-linecap="round"/></g>
+  </svg>
+  <p>Si apre soltanto a mano</p>
+</div>
+
+<!-- ============ FATTO A MANO ============ -->
+<section class="hands" id="mano">
+  <div class="wrap">
+    <div class="reveal" style="max-width:44ch">
+      <p class="eyebrow">Il fatto a mano</p>
+      <h2>Sei gesti<br>che nessuno<br>ha automatizzato.</h2>
+      <p class="lead" style="margin-top:1.6rem">
+        La costruzione «ideale» non si può accelerare: ogni paio passa di mano in mano,
+        e ogni mano lascia una firma che non si vede ma si sente sotto il piede.
+      </p>
+    </div>
+
+    <div class="steps">
+      <div class="step reveal">
+        <svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 26c6-14 26-14 32 0"/><path d="M8 26c0 8 32 8 32 0"/><line x1="16" y1="20" x2="16" y2="34"/><line x1="32" y1="20" x2="32" y2="34"/></svg>
+        <span class="n">01</span><h3>La forma</h3>
+        <p>Si parte dal legno, non dal disegno. La forma è la scarpa prima della scarpa.</p>
+      </div>
+      <div class="step reveal" data-d="1">
+        <svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 34l10-24h16l10 24"/><path d="M16 10l16 24"/></svg>
+        <span class="n">02</span><h3>Il taglio</h3>
+        <p>Pelli di prima scelta, tagliate a mano seguendo la fibra: ogni pezzo ha il suo verso.</p>
+      </div>
+      <div class="step reveal" data-d="2">
+        <svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><circle cx="18" cy="20" r="8"/><circle cx="34" cy="20" r="6"/><path d="M6 38c6-6 30-6 36 0"/></svg>
+        <span class="n">03</span><h3>Gli occhi</h3>
+        <p>I due fori in punta: fustellati, rifiniti, allineati a occhio. Cuori e stelle su richiesta.</p>
+      </div>
+      <div class="step reveal" data-d="3">
+        <svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 14c8 8 28 8 36 0"/><path d="M6 24c8 8 28 8 36 0"/><path d="M6 34c8 8 28 8 36 0"/></svg>
+        <span class="n">04</span><h3>La cucitura</h3>
+        <p>Punto dopo punto, con il filo cerato. È qui che la scarpa decide quanto vivrà.</p>
+      </div>
+      <div class="step reveal" data-d="4">
+        <svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="18" width="32" height="16" rx="8"/><line x1="24" y1="12" x2="24" y2="18"/><line x1="24" y1="34" x2="24" y2="40"/></svg>
+        <span class="n">05</span><h3>Il montaggio</h3>
+        <p>Tomaia e fondo si sposano sulla forma. Interamente manuale, senza scorciatoie.</p>
+      </div>
+      <div class="step reveal" data-d="5">
+        <svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M10 36c4-18 24-18 28 0"/><path d="M10 36h28"/><circle cx="24" cy="22" r="3"/></svg>
+        <span class="n">06</span><h3>La rifinitura</h3>
+        <p>Cera, spazzola, controllo. Esce solo quello che rifaremmo per un figlio.</p>
+      </div>
+    </div>
+
+    <div class="counters reveal">
+      <div class="counter"><b data-count="1878" data-plain="1">1878</b><span>anno di fondazione</span></div>
+      <div class="counter"><b data-count="2000">0</b><span>m² a Montegranaro</span></div>
+      <div class="counter"><b data-count="10">0</b><span>artigiani in fabbrica</span></div>
+      <div class="counter"><b data-count="200">0</b><span>paia al giorno</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CUCITURA 2 ============ -->
+<div class="seam" data-seam><svg viewBox="0 0 1200 200" preserveAspectRatio="none" aria-hidden="true">
+  <path class="stitch" data-stitch d="M0 110 C 250 170 350 30 600 100 C 850 170 950 40 1200 90"/>
+  <path class="thread" data-thread d="M0 110 C 250 170 350 30 600 100 C 850 170 950 40 1200 90"/>
+  <g class="needle" data-needle><path d="M-14 0 L14 0" stroke="#14100C" stroke-width="3" stroke-linecap="round"/><circle cx="14" cy="0" r="4" fill="#D9A441"/></g>
+</svg></div>
+
+<!-- ============ COLLEZIONI ============ -->
+<section id="collezioni">
+  <div class="wrap">
+    <div class="reveal" style="max-width:40ch">
+      <p class="eyebrow">Collezioni</p>
+      <h2>Lo stesso<br>sandalo,<br>quattro vite.</h2>
+    </div>
+
+    <div class="cards">
+      <article class="card reveal" data-tilt>
+        <div class="thumb"><svg viewBox="0 0 200 260" aria-hidden="true">
+          <path d="M100 14 C140 14 164 42 165 78 C166 118 150 150 150 190 C150 226 130 250 100 250 C70 250 50 226 50 190 C50 150 34 118 35 78 C36 42 60 14 100 14Z" fill="#E3CBA9" stroke="#A8622F" stroke-width="3"/>
+          <path d="M100 16 C140 16 164 44 165 80 C165 100 158 114 152 126 C136 134 118 138 100 138 C82 138 64 134 48 126 C42 114 35 100 35 80 C36 44 60 16 100 16Z" fill="#A8622F"/>
+          <circle cx="82" cy="74" r="13" fill="#2A1B10"/><circle cx="118" cy="74" r="13" fill="#2A1B10"/>
+          <path d="M46 168 C80 158 120 158 154 168 L154 190 C120 180 80 180 46 190Z" fill="#8B5A2B"/>
+        </svg></div>
+        <h3>Due Occhi</h3>
+        <p>L'originale. Pelle pieno fiore, fondo cucito, gli occhietti aperti sulla punta.</p>
+        <span class="go">L'archetipo <i></i></span>
+      </article>
+
+      <article class="card reveal" data-d="1" data-tilt>
+        <div class="thumb"><svg viewBox="0 0 200 260" aria-hidden="true">
+          <path d="M100 14 C140 14 164 42 165 78 C166 118 150 150 150 190 C150 226 130 250 100 250 C70 250 50 226 50 190 C50 150 34 118 35 78 C36 42 60 14 100 14Z" fill="#D7C4AE" stroke="#5E3313" stroke-width="3"/>
+          <path d="M100 16 C140 16 164 44 165 80 C165 104 156 120 148 134 C132 142 118 146 100 146 C82 146 68 142 52 134 C44 120 35 104 35 80 C36 44 60 16 100 16Z" fill="#6E7A5E"/>
+          <circle cx="82" cy="74" r="13" fill="#3A322A"/><circle cx="118" cy="74" r="13" fill="#3A322A"/>
+<path d="M40 200 h120" stroke="#14100C" stroke-width="12" stroke-linecap="round"/>
+          <path d="M44 214 h112" stroke="#14100C" stroke-width="8" stroke-linecap="round" opacity=".7"/>
+        </svg></div>
+        <h3>Due Occhi #AI</h3>
+        <p>La versione invernale: suola Vibram tagliata a mano, fodera in lana tartan o vitello beige.</p>
+        <span class="go">Autunno · Inverno <i></i></span>
+      </article>
+
+      <article class="card reveal" data-d="2" data-tilt>
+        <div class="thumb"><svg viewBox="0 0 200 260" aria-hidden="true">
+          <path d="M62 40 h76 v92 c0 40 12 58 12 84 H50 c0-26 12-44 12-84Z" fill="#A8622F" stroke="#5E3313" stroke-width="3"/>
+          <path d="M50 216 h100 v18 H50Z" fill="#14100C"/>
+          <path d="M74 58 h52 M74 80 h52 M74 102 h52" stroke="#E3CBA9" stroke-width="3" stroke-dasharray="6 7" stroke-linecap="round" opacity=".8"/>
+          <circle cx="100" cy="150" r="10" fill="#2A1B10"/>
+        </svg></div>
+        <h3>Stivaletti</h3>
+        <p>Caviglia alta, stessa costruzione ideale. Per i primi passi che incontrano il freddo.</p>
+        <span class="go">Il primo inverno <i></i></span>
+      </article>
+
+      <article class="card reveal" data-d="3" data-tilt>
+        <div class="thumb"><svg viewBox="0 0 200 260" aria-hidden="true">
+          <circle cx="66" cy="86" r="30" fill="#C2402A"/><circle cx="134" cy="86" r="30" fill="#D9A441"/>
+          <circle cx="66" cy="164" r="30" fill="#6E7A5E"/><circle cx="134" cy="164" r="30" fill="#8B5A2B"/>
+          <circle cx="100" cy="125" r="26" fill="#F7F2E9" stroke="#14100C" stroke-width="3"/>
+          <circle cx="92" cy="122" r="5" fill="#14100C"/><circle cx="110" cy="122" r="5" fill="#14100C"/>
+        </svg></div>
+        <h3>Configurabili</h3>
+        <p>Vitello, trapper, camoscio, montone lavato, laminati, vernici, velluto. Tu scegli, noi cuciamo.</p>
+        <span class="go">Su misura · 15 giorni <i></i></span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONFIGURATORE ============ -->
+<section class="config" id="configura">
+  <div class="wrap">
+    <div class="reveal" style="max-width:42ch;margin-bottom:clamp(2.4rem,5vw,4rem)">
+      <p class="eyebrow">Configura</p>
+      <h2>Il tuo paio,<br>prima di esistere.</h2>
+      <p class="lead" style="margin-top:1.4rem">Ogni paio viene tagliato dopo l'ordine. Quindici giorni di attesa sono il tempo che serve a una mano per farlo bene.</p>
+    </div>
+
+    <div class="split">
+      <div class="config-stage reveal">
+        <svg id="cfgSandal" viewBox="0 0 400 640" aria-label="Anteprima del sandalo configurato">
+          <path id="cfgSole" d="M200 18 C276 18 322 70 324 142 C326 214 300 252 292 302 C284 352 288 398 293 444 C301 514 266 604 200 604 C134 604 99 514 107 444 C112 398 116 352 108 302 C100 252 74 214 76 142 C78 70 124 18 200 18Z" fill="#C9A57C"/>
+          <path id="cfgInner" d="M200 30 C270 30 312 78 314 144 C316 210 291 250 283 300 C275 350 279 398 284 444 C291 508 260 592 200 592 C140 592 109 508 116 444 C121 398 125 350 117 300 C109 250 84 210 86 144 C88 78 130 30 200 30Z" fill="#E3CBA9"/>
+          <path id="cfgUpper" d="M200 22 C276 22 322 72 324 142 C325 182 314 212 305 240 C271 256 236 262 200 262 C164 262 129 256 95 240 C86 212 75 182 76 142 C78 72 124 22 200 22Z" fill="#A8622F"/>
+          <path d="M200 44 C262 44 302 86 304 146 C306 206 283 248 275 298 C267 348 271 398 276 444 C282 502 254 578 200 578 C146 578 118 502 124 444 C129 398 133 348 125 298 C117 248 94 206 96 146 C98 86 138 44 200 44Z"
+                fill="none" id="cfgStitch" stroke="#F7F2E9" stroke-width="2" stroke-dasharray="9 8" stroke-linecap="round" opacity=".7"/>
+          <g id="cfgEyeGroup"></g>
+          <path id="cfgStrap" d="M96 330 C150 314 250 314 304 330 L304 372 C250 356 150 356 96 372 Z" fill="#8B5A2B"/>
+          <rect x="286" y="322" width="34" height="58" rx="7" fill="none" id="cfgBuckle" stroke="#D9A441" stroke-width="7"/>
+          <line x1="303" y1="326" x2="303" y2="376" id="cfgBuckle2" stroke="#D9A441" stroke-width="5" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <div class="reveal" data-d="1">
+        <div class="opt-group">
+          <h4>01 · Pellame</h4>
+          <div class="chips" data-group="pelle">
+            <button class="chip" data-val="Vitello" aria-pressed="true">Vitello</button>
+            <button class="chip" data-val="Trapper" aria-pressed="false">Trapper</button>
+            <button class="chip" data-val="Camoscio" aria-pressed="false">Camoscio</button>
+            <button class="chip" data-val="Montone lavato" aria-pressed="false">Montone lavato</button>
+            <button class="chip" data-val="Laminato" aria-pressed="false">Laminato</button>
+            <button class="chip" data-val="Vernice" aria-pressed="false">Vernice</button>
+            <button class="chip" data-val="Velluto" aria-pressed="false">Velluto</button>
+          </div>
+        </div>
+
+        <div class="opt-group">
+          <h4>02 · Colore della tomaia</h4>
+          <div class="swatches" data-group="colore">
+            <button class="sw" style="background:#A8622F" data-val="Cuoio" data-color="#A8622F" aria-pressed="true" aria-label="Cuoio"></button>
+            <button class="sw" style="background:#14100C" data-val="Nero" data-color="#241C15" aria-pressed="false" aria-label="Nero"></button>
+            <button class="sw" style="background:#C2402A" data-val="Rosso" data-color="#C2402A" aria-pressed="false" aria-label="Rosso"></button>
+            <button class="sw" style="background:#6E7A5E" data-val="Salvia" data-color="#6E7A5E" aria-pressed="false" aria-label="Salvia"></button>
+            <button class="sw" style="background:#D9A441" data-val="Ocra" data-color="#D9A441" aria-pressed="false" aria-label="Ocra"></button>
+            <button class="sw" style="background:#F0E7DA" data-val="Avorio" data-color="#EFE3D2" aria-pressed="false" aria-label="Avorio"></button>
+          </div>
+        </div>
+
+        <div class="opt-group">
+          <h4>03 · Gli occhi</h4>
+          <div class="chips" data-group="occhi">
+            <button class="chip" data-val="Aperti" aria-pressed="true">Aperti</button>
+            <button class="chip" data-val="Cuori" aria-pressed="false">Cuori</button>
+            <button class="chip" data-val="Stelle" aria-pressed="false">Stelle</button>
+            <button class="chip" data-val="Chiusi" aria-pressed="false">Chiusi con toppa</button>
+          </div>
+        </div>
+
+        <div class="opt-group">
+          <h4>04 · Fondo</h4>
+          <div class="chips" data-group="fondo">
+            <button class="chip" data-val="Cuoio naturale" aria-pressed="true">Cuoio naturale</button>
+            <button class="chip" data-val="Vibram tagliata a mano" aria-pressed="false">Vibram a mano</button>
+          </div>
+        </div>
+
+        <p class="recap" id="recap"></p>
+        <p style="margin-top:1.6rem"><a class="btn light" href="#contatti"><span>Richiedi questo paio</span></a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DIVISORE: LACCI CHE RESPIRANO ============ -->
+<div class="lace-break" aria-hidden="true">
+  <svg viewBox="0 0 1200 200" preserveAspectRatio="none">
+    <path data-lace data-x0="0" data-x1="1200" data-y="60"  data-amp="30" data-k="2.1" data-speed="0.0012" stroke="#D9A441" stroke-width="4"/>
+    <path data-lace data-x0="0" data-x1="1200" data-y="105" data-amp="38" data-k="1.6" data-speed="0.0016" stroke="#A8622F" stroke-width="5"/>
+    <path data-lace data-x0="0" data-x1="1200" data-y="150" data-amp="26" data-k="2.7" data-speed="0.0021" stroke="#C2402A" stroke-width="3.5"/>
+  </svg>
+</div>
+
+<!-- ============ DIARIO ============ -->
+<section class="diary" id="diario">
+  <div class="wrap">
+    <div class="reveal" style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:1.5rem">
+      <div style="max-width:34ch">
+        <p class="eyebrow">Dal banco da lavoro</p>
+        <h2>Il diario<br>della fabbrica.</h2>
+      </div>
+      <a class="btn" href="https://www.instagram.com/eurekatheoriginal/" target="_blank" rel="noopener"><span>@eurekatheoriginal</span></a>
+    </div>
+
+    <div class="grid">
+      <a class="post reveal" href="https://www.instagram.com/eurekatheoriginal/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="44" cy="54" r="18" fill="#2A1B10"/><circle cx="86" cy="54" r="18" fill="#2A1B10"/><path d="M14 92c24-12 68-12 92 0" stroke="#A8622F" stroke-width="6" fill="none" stroke-linecap="round"/></svg>
+        <span>Gli occhi, uno per uno</span>
+      </a>
+      <a class="post reveal" data-d="1" href="https://www.instagram.com/eurekatheoriginal/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 120 120" aria-hidden="true"><path d="M12 84c14-44 82-44 96 0" fill="none" stroke="#8B5A2B" stroke-width="6" stroke-linecap="round"/><path d="M12 84c16 14 76 14 96 0" fill="none" stroke="#D9A441" stroke-width="5" stroke-dasharray="8 9" stroke-linecap="round"/></svg>
+        <span>Il filo cerato</span>
+      </a>
+      <a class="post reveal" data-d="2" href="https://www.instagram.com/eurekatheoriginal/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 120 120" aria-hidden="true"><rect x="34" y="28" width="52" height="64" rx="14" fill="none" stroke="#D9A441" stroke-width="9"/><path d="M40 60h44" stroke="#D9A441" stroke-width="7" stroke-linecap="round"/></svg>
+        <span>Fibbie di ottone</span>
+      </a>
+      <a class="post reveal" data-d="3" href="https://www.instagram.com/eurekatheoriginal/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 120 120" aria-hidden="true"><path d="M24 96c8-40 64-40 72 0Z" fill="#C9A57C" stroke="#5E3313" stroke-width="5"/><path d="M42 74h36" stroke="#5E3313" stroke-width="4" stroke-dasharray="6 6" stroke-linecap="round"/></svg>
+        <span>La forma in legno</span>
+      </a>
+      <a class="post reveal" data-d="4" href="https://www.instagram.com/eurekatheoriginal/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 120 120" aria-hidden="true"><path d="M60 96S22 72 22 48a19 19 0 0 1 38-8 19 19 0 0 1 38 8c0 24-38 48-38 48Z" fill="#C2402A"/></svg>
+        <span>Quando gli occhi diventano cuori</span>
+      </a>
+      <a class="post reveal" data-d="5" href="https://www.instagram.com/eurekatheoriginal/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 120 120" aria-hidden="true"><path d="M60 20l12 28 30 3-23 20 7 29-26-16-26 16 7-29-23-20 30-3Z" fill="#D9A441"/></svg>
+        <span>…e stelle</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer id="contatti">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="reveal">
+        <p class="eyebrow">Contatti</p>
+        <h3>Scriveteci: rispondiamo con le mani sporche di cera.</h3>
+        <p style="margin-top:1.6rem"><a class="btn light" href="https://eurekatheoriginal.it/" target="_blank" rel="noopener"><span>Sito ufficiale</span></a></p>
+      </div>
+      <div class="foot-col reveal" data-d="1">
+        <h5>Dove</h5>
+        <p>Montegranaro (FM)</p>
+        <p>Marche · Italia</p>
+        <p>Distretto calzaturiero</p>
+      </div>
+      <div class="foot-col reveal" data-d="2">
+        <h5>Naviga</h5>
+        <a href="#origine">Origine</a>
+        <a href="#storia">La nostra storia</a>
+        <a href="#mano">Fatto a mano</a>
+        <a href="#collezioni">Collezioni</a>
+        <a href="#configura">Configura il tuo</a>
+        <a href="https://www.instagram.com/eurekatheoriginal/" target="_blank" rel="noopener">Instagram</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>Eureka the original — dal 1878</span>
+      <span>Fatto a mano in Italia</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/eureka.js"></script>
+</body>
+</html>
