@@ -135,6 +135,23 @@
   <div class="scroll-hint"><span>Scorri</span><i></i></div>
 </header>
 
+<!-- ============ L'APERTURA (sequenza 3D legata allo scorrimento) ============ -->
+<section class="unbox" id="apertura" aria-labelledby="apertura-tit">
+  <div class="unbox-sticky">
+    <div class="stage3d unbox-stage" id="unbox3d" role="img"
+         aria-label="Sequenza animata: una scatola Eureka si apre, la velina si scosta e il sandalo due occhi sale, avvolto da tre fili.">
+      <div class="loading3d">L'apertura <b></b></div>
+    </div>
+    <div class="unbox-text">
+      <h2 id="apertura-tit" class="sr-only">L'apertura della scatola</h2>
+      <p class="unbox-cap" data-from="0"    data-to="0.22">Una scatola di cartone.<br><em>Niente di speciale.</em></p>
+      <p class="unbox-cap" data-from="0.22" data-to="0.46">Dentro, però,<br>centoquarantasette anni.</p>
+      <p class="unbox-cap" data-from="0.46" data-to="0.74">Cucita a mano,<br>una paia alla volta.</p>
+      <p class="unbox-cap" data-from="0.74" data-to="1.01">E due occhi<br>che guardano avanti.</p>
+    </div>
+  </div>
+</section>
+
 <!-- ============ CUCITURA 1 ============ -->
 <div class="seam" data-seam><svg viewBox="0 0 1200 200" preserveAspectRatio="none" aria-hidden="true">
   <path class="stitch" data-stitch d="M0 100 C 200 40 300 160 500 100 C 700 40 800 160 1000 100 C 1100 70 1150 90 1200 100"/>
@@ -505,5 +522,6 @@
 <script src="assets/vendor/three-eureka.js"></script>
 <script src="assets/js/eureka.js"></script>
 <script src="assets/js/eureka-3d.js"></script>
+<script src="assets/js/eureka-unboxing.js"></script>
 </body>
 </html>

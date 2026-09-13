@@ -291,7 +291,9 @@
       if (window.EurekaPendingColors) window.EurekaModel.setColors(window.EurekaPendingColors);
     }
 
-    window.Eureka3D = { stages: stages };  /* utile per verifiche e regolazioni */
+    window.Eureka3D = { stages: stages, source: src, bbox: box };
+    /* la scena dell'apertura riusa questo stesso modello */
+    document.dispatchEvent(new CustomEvent("eureka:model", { detail: { source: src, bbox: box } }));
     requestAnimationFrame(loop);
   }
 
