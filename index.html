@@ -79,7 +79,10 @@
 
     <div class="hero-stage">
       <div class="halo"></div>
-      <!-- sandalo due occhi, vista dall'alto -->
+      <div class="stage3d" id="hero3d">
+        <div class="loading3d">Carico il modello <b>0%</b></div>
+      </div>
+      <!-- disegno di riserva, se il 3D non parte -->
       <svg class="sandal" id="heroSandal" viewBox="0 0 400 640" aria-label="Il sandalo due occhi Eureka">
         <ellipse cx="200" cy="616" rx="120" ry="16" fill="rgba(20,16,12,.16)"/>
         <!-- suola -->
@@ -123,6 +126,7 @@
         <path data-lace data-x0="120" data-x1="280" data-y="498" data-amp="17" data-k="2.3" data-speed="0.0019"
               stroke="#C2402A" stroke-width="5" opacity=".95"/>
       </svg>
+      <p class="grab-hint">Trascina per girarlo</p>
     </div>
   </div>
   <div class="scroll-hint"><span>Scorri</span><i></i></div>
@@ -295,25 +299,14 @@
 
     <div class="cards">
       <article class="card reveal" data-tilt>
-        <div class="thumb"><svg viewBox="0 0 200 260" aria-hidden="true">
-          <path d="M100 14 C140 14 164 42 165 78 C166 118 150 150 150 190 C150 226 130 250 100 250 C70 250 50 226 50 190 C50 150 34 118 35 78 C36 42 60 14 100 14Z" fill="#E3CBA9" stroke="#A8622F" stroke-width="3"/>
-          <path d="M100 16 C140 16 164 44 165 80 C165 100 158 114 152 126 C136 134 118 138 100 138 C82 138 64 134 48 126 C42 114 35 100 35 80 C36 44 60 16 100 16Z" fill="#A8622F"/>
-          <circle cx="82" cy="74" r="13" fill="#2A1B10"/><circle cx="118" cy="74" r="13" fill="#2A1B10"/>
-          <path d="M46 168 C80 158 120 158 154 168 L154 190 C120 180 80 180 46 190Z" fill="#8B5A2B"/>
-        </svg></div>
+        <div class="thumb"><img src="assets/img/card-due-occhi.webp" width="600" height="480" loading="lazy" decoding="async" alt="Il sandalo due occhi in pelle color cuoio, fondo naturale"></div>
         <h3>Due Occhi</h3>
         <p>L'originale. Pelle pieno fiore, fondo cucito, gli occhietti aperti sulla punta.</p>
         <span class="go">L'archetipo <i></i></span>
       </article>
 
       <article class="card reveal" data-d="1" data-tilt>
-        <div class="thumb"><svg viewBox="0 0 200 260" aria-hidden="true">
-          <path d="M100 14 C140 14 164 42 165 78 C166 118 150 150 150 190 C150 226 130 250 100 250 C70 250 50 226 50 190 C50 150 34 118 35 78 C36 42 60 14 100 14Z" fill="#D7C4AE" stroke="#5E3313" stroke-width="3"/>
-          <path d="M100 16 C140 16 164 44 165 80 C165 104 156 120 148 134 C132 142 118 146 100 146 C82 146 68 142 52 134 C44 120 35 104 35 80 C36 44 60 16 100 16Z" fill="#6E7A5E"/>
-          <circle cx="82" cy="74" r="13" fill="#3A322A"/><circle cx="118" cy="74" r="13" fill="#3A322A"/>
-<path d="M40 200 h120" stroke="#14100C" stroke-width="12" stroke-linecap="round"/>
-          <path d="M44 214 h112" stroke="#14100C" stroke-width="8" stroke-linecap="round" opacity=".7"/>
-        </svg></div>
+        <div class="thumb"><img src="assets/img/card-due-occhi-ai.webp" width="600" height="480" loading="lazy" decoding="async" alt="Il due occhi invernale in pelle verde salvia, suola Vibram scura"></div>
         <h3>Due Occhi #AI</h3>
         <p>La versione invernale: suola Vibram tagliata a mano, fodera in lana tartan o vitello beige.</p>
         <span class="go">Autunno · Inverno <i></i></span>
@@ -332,12 +325,7 @@
       </article>
 
       <article class="card reveal" data-d="3" data-tilt>
-        <div class="thumb"><svg viewBox="0 0 200 260" aria-hidden="true">
-          <circle cx="66" cy="86" r="30" fill="#C2402A"/><circle cx="134" cy="86" r="30" fill="#D9A441"/>
-          <circle cx="66" cy="164" r="30" fill="#6E7A5E"/><circle cx="134" cy="164" r="30" fill="#8B5A2B"/>
-          <circle cx="100" cy="125" r="26" fill="#F7F2E9" stroke="#14100C" stroke-width="3"/>
-          <circle cx="92" cy="122" r="5" fill="#14100C"/><circle cx="110" cy="122" r="5" fill="#14100C"/>
-        </svg></div>
+        <div class="thumb"><img src="assets/img/card-configurabili.webp" width="600" height="480" loading="lazy" decoding="async" alt="Il due occhi configurato in pelle rossa"></div>
         <h3>Configurabili</h3>
         <p>Vitello, trapper, camoscio, montone lavato, laminati, vernici, velluto. Tu scegli, noi cuciamo.</p>
         <span class="go">Su misura · 15 giorni <i></i></span>
@@ -357,6 +345,9 @@
 
     <div class="split">
       <div class="config-stage reveal">
+        <div class="stage3d" id="cfg3d">
+          <div class="loading3d">Carico il modello <b>0%</b></div>
+        </div>
         <svg id="cfgSandal" viewBox="0 0 400 640" aria-label="Anteprima del sandalo configurato">
           <path id="cfgSole" d="M200 18 C276 18 322 70 324 142 C326 214 300 252 292 302 C284 352 288 398 293 444 C301 514 266 604 200 604 C134 604 99 514 107 444 C112 398 116 352 108 302 C100 252 74 214 76 142 C78 70 124 18 200 18Z" fill="#C9A57C"/>
           <path id="cfgInner" d="M200 30 C270 30 312 78 314 144 C316 210 291 250 283 300 C275 350 279 398 284 444 C291 508 260 592 200 592 C140 592 109 508 116 444 C121 398 125 350 117 300 C109 250 84 210 86 144 C88 78 130 30 200 30Z" fill="#E3CBA9"/>
@@ -403,6 +394,10 @@
             <button class="chip" data-val="Cuori" aria-pressed="false">Cuori</button>
             <button class="chip" data-val="Stelle" aria-pressed="false">Stelle</button>
             <button class="chip" data-val="Chiusi" aria-pressed="false">Chiusi con toppa</button>
+          </div>
+          <div class="eye-detail">
+            <svg id="eyeDetailSvg" viewBox="0 0 210 96" aria-label="Dettaglio della punta"></svg>
+            <span>Dettaglio della punta</span>
           </div>
         </div>
 
@@ -502,6 +497,8 @@
   </div>
 </footer>
 
+<script src="assets/vendor/three-eureka.js"></script>
 <script src="assets/js/eureka.js"></script>
+<script src="assets/js/eureka-3d.js"></script>
 </body>
 </html>

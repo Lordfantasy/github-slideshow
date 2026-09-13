@@ -224,7 +224,8 @@
     if (!stage) return;
     var state = { pelle: "Vitello", colore: "Cuoio", occhi: "Aperti", fondo: "Cuoio naturale", hex: "#A8622F" };
     var upper = $("#cfgUpper"), strap = $("#cfgStrap"), sole = $("#cfgSole"),
-        eyeG = $("#cfgEyeGroup"), recap = $("#recap"), stitch = $("#cfgStitch");
+        eyeG = $("#cfgEyeGroup"), recap = $("#recap"), stitch = $("#cfgStitch"),
+        eyeDetail = $("#eyeDetailSvg");
 
     function shade(hex, amt) {
       var n = parseInt(hex.slice(1), 16);
@@ -261,6 +262,22 @@
       recap.innerHTML = "Due Occhi in <b>" + state.pelle.toLowerCase() + "</b> colore <b>" +
         state.colore.toLowerCase() + "</b>, occhi <b>" + state.occhi.toLowerCase() + "</b>, fondo <b>" +
         state.fondo.toLowerCase() + "</b>. Tagliato dopo l'ordine · pronto in <b>15 giorni</b>.";
+
+      /* la forma degli occhi non e' nella geometria del modello: la mostriamo a parte */
+      if (eyeDetail) {
+        eyeDetail.innerHTML = '<rect width="210" height="96" rx="4" fill="' + hex + '"/>' +
+          SHAPES[state.occhi](74, 48, hex) + SHAPES[state.occhi](136, 48, hex);
+      }
+
+      /* i tre materiali del modello 3D seguono la configurazione */
+      var colors = {
+        pelle: hex,
+        fondo: state.fondo === "Cuoio naturale" ? "#C9A57C" : "#2B2621",
+        filo: "#EFE0C8",
+        lucida: state.pelle === "Vernice" || state.pelle === "Laminato"
+      };
+      if (window.EurekaModel) window.EurekaModel.setColors(colors);
+      else window.EurekaPendingColors = colors;
     }
 
     $$("[data-group]").forEach(function (group) {
