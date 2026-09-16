@@ -2,9 +2,9 @@
 import SpinViewer from "./SpinViewer";
 import { hero, social } from "@/lib/content";
 
-/* Trittico del riferimento: testo a sinistra, prodotto al centro,
-   parte commerciale a destra. Prezzo e misure restano segnaposto:
-   non ho dati ufficiali e inventarli sarebbe peggio che lasciarli vuoti. */
+/* Trittico del riferimento: testo a sinistra, prodotto al centro, misure
+   a destra. Al posto del prezzo c'e' l'invito a configurare: il negozio
+   non e' qui, e un prezzo inventato sarebbe peggio di nessun prezzo. */
 export default function Hero() {
   return (
     <section id="prodotto" className="relative min-h-svh overflow-hidden pt-[var(--nav-h)]">
@@ -46,20 +46,23 @@ export default function Hero() {
           </p>
         </div>
 
-        {/* parte commerciale */}
+        {/* misure e invito: niente prezzi, il negozio non e' qui */}
         <div className="order-3 lg:col-span-3 lg:justify-self-end lg:text-right">
-          <p className="text-3xl font-semibold">{hero.prezzo}</p>
-          <p className="mt-1 text-lg line-through" style={{ color: "var(--campo-300)" }}>{hero.prezzoPieno}</p>
-          <p className="mt-8 text-[.72rem] uppercase tracking-[.16em]" style={{ color: "var(--campo-300)" }}>
+          <p className="text-[.72rem] uppercase tracking-[.16em]" style={{ color: "var(--campo-300)" }}>
             {hero.taglieEtichetta}
           </p>
           <div className="mt-3 flex max-w-[15rem] flex-wrap gap-1.5 lg:justify-end">
             {hero.taglie.map((t) => (
               <a key={t} href="#configura"
-                 className="grid h-10 w-10 place-items-center rounded-full text-[.78rem] transition-colors"
+                 className="grid h-10 w-10 place-items-center rounded-full text-[.78rem] transition-colors hover:bg-white/10"
                  style={{ border: "1px solid rgba(241,234,230,.45)" }}>{t}</a>
             ))}
           </div>
+          <p className="corpo mt-4 text-[.78rem] lg:ml-auto">{hero.taglieNota}</p>
+          <a href="#configura" className="pillola mt-6">
+            {hero.ctaConfigura}
+            <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </a>
         </div>
       </div>
 

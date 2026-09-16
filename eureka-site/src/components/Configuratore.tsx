@@ -109,7 +109,7 @@ export default function Configuratore() {
                           }} />
                 ))}
               </div>
-              <p className="segnaposto mt-3">{cfg.avvisoColori}</p>
+              <p className="mt-3 text-[.72rem]" style={{ color: "var(--campo-300)" }}>{cfg.notaColori}</p>
             </Gruppo>
 
             <Gruppo titolo="03 · Fondo">
@@ -148,6 +148,9 @@ export default function Configuratore() {
               misura <b style={{ color: "var(--campo-100)", fontWeight: 600 }}>{stato.misura}</b>. {cfg.attesa}.
             </p>
             <a href="#contatti" className="pillola mt-5">{cfg.cta}</a>
+            <p className="mt-3 text-[.72rem]" style={{ color: "var(--campo-300)" }}>
+              L&apos;indirizzo di questa pagina contiene la configurazione: copiatelo e portatelo con voi.
+            </p>
           </Entra>
         </div>
       </div>

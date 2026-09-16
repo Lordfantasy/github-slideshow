@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Eureka the original — sito
 
-## Getting Started
+Vetrina di prodotto per il sandalo due occhi. Next.js (App Router),
+TypeScript, Tailwind v4, React Three Fiber.
 
-First, run the development server:
+## Avvio
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev       # sviluppo
+npm run build     # produce ./out, sito statico
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Il sito è esportato **statico**: nessuna rotta API, nessun dato che cambia a
+richiesta. La cartella `out/` si pubblica ovunque — GitHub Pages, Vercel,
+Netlify, un qualunque spazio web.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Com'è fatto
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Sezione | Cosa fa |
+|---|---|
+| Hero | Trittico: testo, prodotto, misure. Il prodotto sono 32 pose renderizzate fuori dal browser: si trascina e gira, senza WebGL. |
+| Collezione | Fila orizzontale con scatto, tre modelli. |
+| La storia | 1878 → anni '70 → oggi, con contatori. |
+| Fatto a mano | I sei gesti, poi la camera 3D che scorre lungo il fianco fino al macro. |
+| Configura | Pellame, colore, fondo, misura. Ricolora il modello dal vivo; la scelta sta nell'indirizzo. |
+| Contatti | Dove siamo, e i due canali ufficiali. |
 
-## Learn More
+## Dove stanno i testi
 
-To learn more about Next.js, take a look at the following resources:
+Tutti in `src/lib/content.ts`. Niente stringhe sparse nei componenti.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Dati veri e dati non pubblici
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Presi dal sito ufficiale: i sette pellami, le misure 17–28 (modello alto
+fino al 26), i quindici giorni di lavorazione, la storia.
 
-## Deploy on Vercel
+**Non pubblici, quindi non presenti:** prezzi, telefono, e-mail, showroom,
+cartelle colore per pellame. Non sono segnaposto: il sito racconta quel che
+sa e per il resto manda al sito ufficiale. Non c'è un modulo contatti,
+perché un modulo senza destinatario è una promessa falsa.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+I campioni colore del configuratore sono dichiarati in pagina come
+anteprima, non come campionario.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Vincoli rispettati
+
+- Nessuna dipendenza da CDN: three.js, drei e i font sono locali o di sistema.
+- Senza WebGL restano la fotografia e tutte le scelte del configuratore.
+- `prefers-reduced-motion`: niente camera guidata, niente rotazione
+  automatica, sezioni che tornano alte un solo schermo.
+- Contrasto ≥ 4,5:1 su ogni testo, bersagli ≥ 24 px, un solo `h1`,
+  landmark `main`, link di salto, menu `inert` da chiuso.
+- Solo italiano: la versione inglese richiede testi che non sono arrivati.
+
+## Misure (build di produzione, desktop 1440px)
+
+- primo disegno con contenuto: **440 ms**
+- JS della prima pagina: **143 KB compressi** (473 grezzi)
+- prima pagina completa: **1,8 MB** — le 32 pose del prodotto
+- dopo aver visto tutto: **3,5 MB** — si aggiunge il modello 3D da 2 MB,
+  che arriva solo a chi scorre fin laggiù
+
+## Il modello 3D
+
+`public/eureka-due-occhi.glb` ha **una mesh** con tre gruppi di materiale,
+nessuna UV, nessuna texture: la grana è scolpita nella geometria. Va bene
+per ricolorare, non per smontare. Per un esploso dei componenti servono
+mesh separate — dettagli in `NOTE-FASE-2.md`.

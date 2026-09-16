@@ -1,10 +1,9 @@
 /* =========================================================
    Tutti i testi del sito, in un posto solo.
-   Regola del brief: niente dati inventati. Dove manca un contenuto
-   ufficiale c'e' un segnaposto visibile, che l'interfaccia mostra come
-   tale invece di riempirlo di finzione.
+   Regola del brief: niente dati inventati. Quel che non e' pubblico non
+   viene ne' inventato ne' lasciato come buco in pagina: il sito racconta
+   quel che sa e manda al sito ufficiale per il resto.
    ========================================================= */
-export const daFornire = (cosa: string) => `[DA FORNIRE: ${cosa}]`;
 
 export const brand = {
   nome: "Eureka",
@@ -28,10 +27,10 @@ export const hero = {
     "rispettasse davvero il piede di un bambino. Da allora si taglia, si cuce " +
     "e si monta a mano, una paia alla volta.",
   cta: "Scopri il due occhi",
+  ctaConfigura: "Configura il tuo",
   payoff: ["Fatto a mano in Italia,", "dal 1878."],
-  prezzo: daFornire("prezzo"),
-  prezzoPieno: daFornire("prezzo pieno"),
-  taglieEtichetta: "Scegli la misura",
+  taglieEtichetta: "Le misure",
+  taglieNota: "Dalla 17 alla 28. Il modello alto arriva al 26.",
   taglie: Array.from({ length: 12 }, (_, i) => String(17 + i)),
 };
 
@@ -97,7 +96,7 @@ export const configuratore = {
     { nome: "Blu", hex: "#3B4A6B" },
     { nome: "Nero", hex: "#241C15" },
   ],
-  avvisoColori: daFornire("cartella colori ufficiale per ciascun pellame"),
+  notaColori: "Anteprima dei toni: non e' il campionario completo.",
   fondi: [
     { nome: "Cuoio naturale", hex: "#C9A57C" },
     { nome: "Vibram tagliata a mano", hex: "#2B2621" },
@@ -106,15 +105,16 @@ export const configuratore = {
   misure: Array.from({ length: 12 }, (_, i) => String(17 + i)),
   notaMisure: "Il modello alto arriva fino al 26; dal 27 in su resta il modello basso.",
   attesa: "Tagliato dopo l'ordine \u00b7 pronto in 15 giorni",
-  cta: "Richiedi questa configurazione",
+  cta: "Porta questa configurazione a Eureka",
 };
 
 export const contatti = {
-  titolo: "Scriveteci.",
-  luogo: ["Montegranaro (FM)", "Marche · Italia"],
-  telefono: daFornire("telefono"),
-  email: daFornire("indirizzo e-mail"),
-  showroom: daFornire("indirizzo showroom"),
+  titolo: "Ci trovate qui.",
+  testo:
+    "Lo stabilimento e' a Montegranaro, nelle Marche, nel distretto " +
+    "calzaturiero dove il due occhi si fa da cinquant'anni.",
+  luogo: ["Montegranaro (FM)", "Marche \u00b7 Italia"],
+  recapiti: { etichetta: "Recapiti e rivenditori", href: "https://eurekatheoriginal.it/" },
 };
 
 export const social = [

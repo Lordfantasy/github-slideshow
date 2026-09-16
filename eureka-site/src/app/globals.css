@@ -78,11 +78,6 @@ section{scroll-margin-top:calc(var(--nav-h) + 12px)}
   color:var(--campo-300);margin:0 0 1rem;
 }
 .corpo{color:var(--campo-300);max-width:46ch}
-.segnaposto{
-  font-family:var(--ff-mono);font-size:.72rem;letter-spacing:.04em;
-  color:var(--ottone-testo);border:1px dashed var(--ottone);border-radius:4px;
-  padding:.3rem .55rem;display:inline-block;
-}
 
 /* ---------- comandi a pillola, come nel riferimento ---------- */
 .pillola{
