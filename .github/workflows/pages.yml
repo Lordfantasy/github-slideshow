@@ -6,7 +6,7 @@ name: Pubblica il sito
 
 on:
   push:
-    branches: [claude/eureka-vetrina-prodotto]
+    branches: [main, claude/eureka-vetrina-prodotto]
   workflow_dispatch:
 
 permissions:
