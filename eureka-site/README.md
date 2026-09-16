@@ -22,6 +22,18 @@ assoluti e `file://` non li trova. In locale basta:
 npm run build && npx serve out      # oppure: cd out && python3 -m http.server
 ```
 
+### Copia da aprire con doppio clic
+
+```bash
+NEXT_PUBLIC_RELATIVO=1 npm run build && node pacchetto-locale.mjs
+```
+
+Produce una `out/` che si apre davvero con un doppio clic su `index.html`,
+senza server e senza rete. Due accorgimenti la rendono possibile: i percorsi
+diventano relativi, e il modello `.glb` viene incorporato come data URI,
+perché `file://` vieta a una pagina di leggere un file vicino. Il 3D resta
+completo: entrambe le scene e il configuratore funzionano.
+
 ### In sottocartella (GitHub Pages)
 
 ```bash

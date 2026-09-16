@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import { leggiWebGL, suServer, sottoscrivi } from "@/lib/webgl";
 import RipiegoScena from "./RipiegoScena";
+import Scudo from "./Scudo";
 import Entra from "./Entra";
 import type { Stato } from "./tipi";
 
@@ -70,7 +71,9 @@ export default function Configuratore() {
           <div className="relative h-[52svh] min-h-[340px] cursor-grab overflow-hidden rounded-2xl active:cursor-grabbing"
                style={{ background: "var(--campo-600)", touchAction: "pan-y" }}>
             {monta && webgl ? (
-              <SandaloCanvas stato={stato} />
+              <Scudo ripiego={<RipiegoScena nota="L'anteprima dal vivo non e' disponibile: qui resta la fotografia. Le scelte qui accanto restano valide." />}>
+                <SandaloCanvas stato={stato} />
+              </Scudo>
             ) : (
               <RipiegoScena nota={webgl ? undefined : "L'anteprima dal vivo ha bisogno di WebGL: qui resta la fotografia. Le scelte qui accanto restano valide."} />
             )}

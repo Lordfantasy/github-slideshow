@@ -1,7 +1,9 @@
-/* Su GitHub Pages il sito vive in una sottocartella
-   (/github-slideshow/), non alla radice. Next antepone il basePath da solo
-   solo a next/link e next/image: per le immagini e il modello, che sono
-   percorsi scritti a mano, dobbiamo farlo noi. In sviluppo la variabile
-   non c'e' e tutto resta alla radice. */
-export const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
-export const percorso = (p: string) => `${base}${p}`;
+/* Dove stanno le risorse scritte a mano (immagini, pose, modello).
+   Next antepone il basePath da solo solo a next/link e next/image.
+   - su GitHub Pages il sito vive in /github-slideshow/  -> NEXT_PUBLIC_BASE_PATH
+   - per aprirlo da file:// servono percorsi relativi     -> NEXT_PUBLIC_RELATIVO
+   - in sviluppo nessuna delle due: tutto alla radice. */
+const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const relativo = process.env.NEXT_PUBLIC_RELATIVO === "1";
+
+export const percorso = (p: string) => (base ? `${base}${p}` : relativo ? `.${p}` : p);

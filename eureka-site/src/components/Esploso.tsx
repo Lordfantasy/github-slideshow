@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import dynamic from "next/dynamic";
 import { leggiWebGL, suServer, sottoscrivi } from "@/lib/webgl";
 import RipiegoScena from "./RipiegoScena";
+import Scudo from "./Scudo";
 
 /* Cosa si vede avvicinandosi, nell'ordine in cui la camera ci arriva. */
 const TAPPE = [
@@ -57,7 +58,9 @@ export default function Esploso() {
       <div className="macro-fermo sticky top-0 grid h-svh place-items-center overflow-hidden">
         <div className="relative h-[70svh] w-full max-w-[1100px]">
           {monta && webgl ? (
-            <MacroCanvas avanzamento={avanzamento} />
+            <Scudo ripiego={<RipiegoScena />}>
+              <MacroCanvas avanzamento={avanzamento} />
+            </Scudo>
           ) : (
             <RipiegoScena />
           )}

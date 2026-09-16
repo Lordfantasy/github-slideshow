@@ -9,7 +9,8 @@ const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const nextConfig: NextConfig = {
   output: "export",
   basePath: base || undefined,
-  assetPrefix: base || undefined,
+  /* "./" rende i percorsi relativi: serve per aprire il sito da file:// */
+  assetPrefix: base || (process.env.NEXT_PUBLIC_RELATIVO === "1" ? "./" : undefined),
   images: { unoptimized: true },
   trailingSlash: true,
 };
