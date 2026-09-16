@@ -199,6 +199,20 @@ section{position:relative;padding-block:clamp(5rem,11vw,9.5rem)}
 .scroll-hint i{display:block;width:1px;height:42px;background:linear-gradient(var(--ink-3),transparent);animation:drop 2s infinite}
 @keyframes drop{0%{transform:scaleY(0);transform-origin:0 0}50%{transform:scaleY(1);transform-origin:0 0}51%{transform:scaleY(1);transform-origin:0 100%}100%{transform:scaleY(0);transform-origin:0 100%}}
 
+/* ===================== il giro a fotogrammi ===================== */
+.spin{
+  position:relative;width:100%;max-width:620px;aspect-ratio:820/486;
+  cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none;
+}
+.spin.dragging{cursor:grabbing}
+.spin-frame{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:contain;
+  opacity:0;pointer-events:none;
+}
+.spin-frame.is-on{opacity:1}
+.spin:focus-visible{outline:3px solid var(--leather-2);outline-offset:8px;border-radius:6px}
+.hero-stage .grab-hint{opacity:.75}
+
 /* ===================== il modello 3D ===================== */
 .stage3d{
   position:relative;width:100%;max-width:540px;aspect-ratio:1/1;

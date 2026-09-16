@@ -82,53 +82,13 @@
 
     <div class="hero-stage">
       <div class="halo"></div>
-      <div class="stage3d" id="hero3d" tabindex="0" role="img" aria-label="Modello tridimensionale del sandalo due occhi. Usa le frecce sinistra e destra per girarlo.">
-        <div class="loading3d">Carico il modello <b>0%</b></div>
+      <div class="spin" id="heroSpin" data-frames="32" data-pattern="assets/spin/spin-%.webp"
+           tabindex="0" role="img"
+           aria-label="Il sandalo due occhi ripreso in trentadue pose. Trascina, o usa le frecce sinistra e destra, per girarlo.">
+        <img class="spin-frame is-on" src="assets/spin/spin-00.webp" width="820" height="486"
+             fetchpriority="high" decoding="async"
+             alt="Il sandalo due occhi Eureka, pelle color cuoio e fondo cucito a mano">
       </div>
-      <!-- disegno di riserva, se il 3D non parte -->
-      <svg class="sandal" id="heroSandal" viewBox="0 0 400 640" aria-label="Il sandalo due occhi Eureka">
-        <ellipse cx="200" cy="616" rx="120" ry="16" fill="rgba(20,16,12,.16)"/>
-        <!-- suola -->
-        <path d="M200 18 C276 18 322 70 324 142 C326 214 300 252 292 302 C284 352 288 398 293 444 C301 514 266 604 200 604 C134 604 99 514 107 444 C112 398 116 352 108 302 C100 252 74 214 76 142 C78 70 124 18 200 18Z"
-              fill="#C9A57C"/>
-        <path d="M200 30 C270 30 312 78 314 144 C316 210 291 250 283 300 C275 350 279 398 284 444 C291 508 260 592 200 592 C140 592 109 508 116 444 C121 398 125 350 117 300 C109 250 84 210 86 144 C88 78 130 30 200 30Z"
-              fill="#E3CBA9"/>
-        <!-- cuciture perimetrali -->
-        <path d="M200 44 C262 44 302 86 304 146 C306 206 283 248 275 298 C267 348 271 398 276 444 C282 502 254 578 200 578 C146 578 118 502 124 444 C129 398 133 348 125 298 C117 248 94 206 96 146 C98 86 138 44 200 44Z"
-              fill="none" stroke="#8B5A2B" stroke-width="2" stroke-dasharray="9 8" stroke-linecap="round" opacity=".65"/>
-        <!-- tomaia in punta -->
-        <path d="M200 22 C276 22 322 72 324 142 C325 182 314 212 305 240 C271 256 236 262 200 262 C164 262 129 256 95 240 C86 212 75 182 76 142 C78 72 124 22 200 22Z"
-              fill="#A8622F"/>
-        <path d="M200 34 C268 34 312 80 314 144 C315 180 305 208 297 232 C266 246 234 251 200 251 C166 251 134 246 103 232 C95 208 85 180 86 144 C88 80 132 34 200 34Z"
-              fill="#B96F37"/>
-        <path d="M104 236 C140 250 170 256 200 256 C230 256 260 250 296 236"
-              fill="none" stroke="#5E3313" stroke-width="2" stroke-dasharray="8 7" stroke-linecap="round" opacity=".7"/>
-        <!-- GLI OCCHI -->
-        <g id="eyes">
-          <circle cx="162" cy="140" r="27" fill="#2A1B10"/>
-          <circle cx="238" cy="140" r="27" fill="#2A1B10"/>
-          <g id="pupils">
-            <circle class="pupil" data-cx="162" data-cy="140" cx="162" cy="140" r="10" fill="#F7F2E9"/>
-            <circle class="pupil" data-cx="238" data-cy="140" cx="238" cy="140" r="10" fill="#F7F2E9"/>
-          </g>
-          <g id="lids">
-            <path class="lid" d="M135 140 a27 27 0 0 1 54 0 Z" fill="#B96F37" transform="scale(1 0.001)" transform-origin="162px 140px"/>
-            <path class="lid" d="M211 140 a27 27 0 0 1 54 0 Z" fill="#B96F37" transform="scale(1 0.001)" transform-origin="238px 140px"/>
-          </g>
-        </g>
-        <!-- cinturino + fibbia -->
-        <g>
-          <path d="M96 330 C150 314 250 314 304 330 L304 372 C250 356 150 356 96 372 Z" fill="#8B5A2B"/>
-          <path d="M104 336 C154 322 246 322 296 336" fill="none" stroke="#E3CBA9" stroke-width="1.6" stroke-dasharray="7 6" opacity=".6"/>
-          <rect x="286" y="322" width="34" height="58" rx="7" fill="none" stroke="#D9A441" stroke-width="7"/>
-          <line x1="303" y1="326" x2="303" y2="376" stroke="#D9A441" stroke-width="5" stroke-linecap="round"/>
-        </g>
-        <!-- laccetto vivo, fissato a due occhielli -->
-        <circle cx="120" cy="498" r="7" fill="#5E3313"/>
-        <circle cx="280" cy="498" r="7" fill="#5E3313"/>
-        <path data-lace data-x0="120" data-x1="280" data-y="498" data-amp="17" data-k="2.3" data-speed="0.0019"
-              stroke="#C2402A" stroke-width="5" opacity=".95"/>
-      </svg>
       <p class="grab-hint">Trascina per girarlo</p>
     </div>
   </div>
@@ -522,6 +482,7 @@
 <script src="assets/vendor/three-eureka.js"></script>
 <script src="assets/js/eureka-look.js"></script>
 <script src="assets/js/eureka.js"></script>
+<script src="assets/js/eureka-spin.js"></script>
 <script src="assets/js/eureka-3d.js"></script>
 <script src="assets/js/eureka-unboxing.js"></script>
 </body>

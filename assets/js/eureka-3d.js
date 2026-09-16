@@ -278,27 +278,7 @@
     var src = gltf.scene;
     var box = new THREE.Box3().setFromObject(src);
 
-    /* --- HERO --- */
-    var heroHost = document.getElementById("hero3d");
-    if (heroHost) {
-      var heroStage = new Stage(heroHost, {
-        spin: 0, float: true, followPointer: true, followAmount: 0.42,
-        zoom: 0.72, startY: 3.66, elevation: 0.34
-      });
-      var heroModel = src.clone(true);
-      /* materiali rifatti: vernice trasparente, grana calcolata, ruvidezza variabile */
-      if (window.EurekaLook) {
-        window.EurekaLook.dress(heroModel, {
-          pelle: { color: "#A8622F" }, fondo: { color: "#C9A57C" }, fodera_e_filo: { color: "#EFE0C8" }
-        });
-      } else {
-        paint(findMaterials(heroModel), { pelle: "#A8622F", fondo: "#C9A57C", filo: "#EFE0C8" }, 1);
-      }
-      heroStage.setModel(heroModel, box.clone());
-      stages.push(heroStage);
-      heroHost.classList.add("ready");
-      document.querySelector(".hero-stage").classList.add("has3d");
-    }
+    /* L'hero non usa piu' WebGL: mostra fotogrammi calcolati offline. */
 
     /* --- CONFIGURATORE --- */
     var cfgHost = document.getElementById("cfg3d");
@@ -378,6 +358,21 @@
     document.querySelectorAll(".loading3d b").forEach(function (b) { b.textContent = pct + "%"; });
   }
 
+  /* Il modello pesa 2 MB. L'hero non ne ha piu' bisogno: mostra fotogrammi.
+     Quindi non deve contendere banda al primo disegno della pagina — parte
+     a pagina caricata, nei tempi morti, ed e' pronto molto prima che si
+     arrivi all'apertura. */
+  function whenIdle(go) {
+    var fired = false;
+    function run() { if (fired) return; fired = true; go(); }
+    function schedule() {
+      if ("requestIdleCallback" in window) requestIdleCallback(run, { timeout: 2500 });
+      else setTimeout(run, 900);
+    }
+    if (document.readyState === "complete") schedule();
+    else window.addEventListener("load", schedule);
+  }
+
   if (window.EUREKA_MODEL_DATA) {
     /* versione in file unico: il modello viaggia dentro la pagina */
     try {
@@ -386,6 +381,8 @@
       loader.parse(buf.buffer, "", build, function (e) { fail(e); });
     } catch (e) { fail(e); }
   } else {
-    loader.load(MODEL_URL, build, onProgress, function (e) { fail(e && e.message ? e.message : e); });
+    whenIdle(function () {
+      loader.load(MODEL_URL, build, onProgress, function (e) { fail(e && e.message ? e.message : e); });
+    });
   }
 })();
