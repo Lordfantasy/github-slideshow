@@ -1,53 +1,48 @@
 "use client";
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 /* Le 32 pose sono renderizzate fuori dal browser a 1600px e rimpicciolite:
    il dettaglio della pelle non sfarfalla come farebbe in tempo reale.
-   Trascinare scorre le pose, quindi la scarpa si gira comunque. */
+   Trascinare scorre le pose, quindi la scarpa si gira comunque.
+   Funziona senza WebGL e, per il primo fotogramma, anche senza JavaScript. */
 const N = 32;
 const src = (i: number) => `/spin/spin-${String(i).padStart(2, "0")}.webp`;
 
 export default function SpinViewer({ className = "" }: { className?: string }) {
-  const host = useRef<HTMLDivElement>(null);
   const [indice, setIndice] = useState(0);
-  const [caricati, setCaricati] = useState<boolean[]>(() => {
-    const a = new Array(N).fill(false);
-    a[0] = true;
-    return a;
-  });
+  /* quali pose sono gia' arrivate: dato esterno, non serve a disegnare */
+  const caricati = useRef<boolean[]>(Array.from({ length: N }, (_, i) => i === 0));
   const angolo = useRef(0);
   const toccato = useRef(false);
   const trascina = useRef<number | null>(null);
 
   /* prima una posa ogni quattro, cosi' trascinare funziona subito */
   useEffect(() => {
+    const mappa = caricati.current;
     const ordine = [
       ...Array.from({ length: N }, (_, i) => i).filter((i) => i % 4 === 0 && i > 0),
       ...Array.from({ length: N }, (_, i) => i).filter((i) => i % 4 !== 0),
     ];
-    let vivo = true;
-    ordine.forEach((i) => {
+    const immagini = ordine.map((i) => {
       const img = new Image();
-      img.onload = () => vivo && setCaricati((c) => (c[i] ? c : Object.assign([...c], { [i]: true })));
+      img.onload = () => { mappa[i] = true; };
       img.src = src(i);
+      return img;
     });
-    return () => { vivo = false; };
+    return () => { immagini.forEach((img) => { img.onload = null; }); };
   }, []);
 
   const mostra = useCallback((a: number) => {
     angolo.current = a;
-    const grezzo = Math.round((a / (Math.PI * 2)) * N);
-    let i = ((grezzo % N) + N) % N;
-    setCaricati((c) => {
-      if (!c[i]) {
-        for (let d = 1; d < N; d++) {
-          if (c[(i + d) % N]) { i = (i + d) % N; break; }
-          if (c[(i - d + N) % N]) { i = (i - d + N) % N; break; }
-        }
+    const mappa = caricati.current;
+    let i = ((Math.round((a / (Math.PI * 2)) * N) % N) + N) % N;
+    if (!mappa[i]) {
+      for (let d = 1; d < N; d++) {
+        if (mappa[(i + d) % N]) { i = (i + d) % N; break; }
+        if (mappa[(i - d + N) % N]) { i = (i - d + N) % N; break; }
       }
-      setIndice(i);
-      return c;
-    });
+    }
+    setIndice(i);
   }, []);
 
   /* giro lento finche' nessuno tocca, per far capire che si puo' */
@@ -66,9 +61,8 @@ export default function SpinViewer({ className = "" }: { className?: string }) {
 
   return (
     <div
-      ref={host}
-      className={`relative select-none ${className}`}
-      style={{ touchAction: "pan-y", cursor: trascina.current !== null ? "grabbing" : "grab" }}
+      className={`relative cursor-grab select-none active:cursor-grabbing ${className}`}
+      style={{ touchAction: "pan-y" }}
       tabIndex={0}
       role="img"
       aria-label="Il sandalo due occhi ripreso in trentadue pose. Trascina, o usa le frecce sinistra e destra, per girarlo."
@@ -100,7 +94,7 @@ export default function SpinViewer({ className = "" }: { className?: string }) {
         width={820}
         height={486}
         alt="Il sandalo due occhi Eureka, pelle color cuoio e fondo cucito a mano"
-        className="w-full h-auto"
+        className="h-auto w-full"
         draggable={false}
         fetchPriority="high"
       />

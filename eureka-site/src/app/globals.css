@@ -19,7 +19,8 @@
   --cuoio:#A8622F;
   --cuoio-chiaro:#C9884F;
   --brace:#C2402A;
-  --ottone:#B08D57;
+  --ottone:#B08D57;        /* filetti e bordi: elemento grafico, non testo */
+  --ottone-testo:#E0C79A;  /* 4,76:1 sul campo, 5,85:1 sulle card: leggibile */
 
   --ff-display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
   --ff-sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
@@ -79,7 +80,7 @@ section{scroll-margin-top:calc(var(--nav-h) + 12px)}
 .corpo{color:var(--campo-300);max-width:46ch}
 .segnaposto{
   font-family:var(--ff-mono);font-size:.72rem;letter-spacing:.04em;
-  color:var(--ottone);border:1px dashed var(--ottone);border-radius:4px;
+  color:var(--ottone-testo);border:1px dashed var(--ottone);border-radius:4px;
   padding:.3rem .55rem;display:inline-block;
 }
 
@@ -118,6 +119,12 @@ section{scroll-margin-top:calc(var(--nav-h) + 12px)}
   *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
   html{scroll-behavior:auto}
   .entra{opacity:1;transform:none}
+
+  /* Senza camera guidata dallo scorrimento la sezione non ha piu' motivo
+     di essere alta tre schermi: torna a uno, con lo stato finale fermo. */
+  .macro{height:auto}
+  .macro-fermo{position:static;height:auto;padding-block:3rem 5.5rem}
+  .macro-note{position:static;opacity:1 !important;transform:none !important;margin-top:2rem}
 }
 
 @layer components{

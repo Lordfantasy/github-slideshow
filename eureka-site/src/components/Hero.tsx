@@ -29,7 +29,8 @@ export default function Hero() {
             {social.map((s) => (
               <li key={s.nome}>
                 <a href={s.href} target="_blank" rel="noopener"
-                   className="text-[.7rem] uppercase tracking-[.16em]" style={{ color: "var(--campo-300)" }}>
+                   className="inline-flex min-h-[44px] items-center text-[.7rem] uppercase tracking-[.16em]"
+                   style={{ color: "var(--campo-300)" }}>
                   {s.nome}
                 </a>
               </li>

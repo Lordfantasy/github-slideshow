@@ -17,7 +17,7 @@ export default function Lavorazione() {
             <li key={p.n} style={{ background: "var(--campo-700)" }}>
               <Entra delay={i * 70} className="h-full">
                 <div className="h-full p-6">
-                  <span className="text-[.66rem] tracking-[.2em]" style={{ color: "var(--ottone)" }}>{p.n}</span>
+                  <span className="text-[.66rem] tracking-[.2em]" style={{ color: "var(--ottone-testo)" }}>{p.n}</span>
                   <h3 className="mt-3 text-lg font-semibold">{p.nome}</h3>
                   <p className="corpo mt-2 text-[.88rem]">{p.testo}</p>
                 </div>

@@ -4,29 +4,31 @@ import Entra from "./Entra";
 import { storia, numeri } from "@/lib/content";
 
 function Contatore({ a, suffisso, statico }: { a: number; suffisso: string; statico?: boolean }) {
-  const [v, setV] = useState(statico ? a : 0);
-  const rif = useRef<HTMLBaseElement>(null);
+  const [v, setV] = useState(() => (statico ? a : 0));
+  const rif = useRef<HTMLElement>(null);
+
   useEffect(() => {
     if (statico) return;
     const el = rif.current;
     if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { setV(a); return; }
+    /* il valore si aggiorna quando il numero entra in vista: e' una
+       sottoscrizione a qualcosa di esterno, non un secondo disegno subito */
     const io = new IntersectionObserver((voci) => {
-      voci.forEach((x) => {
-        if (!x.isIntersecting) return;
-        io.unobserve(el);
-        const t0 = performance.now();
-        const passo = (t: number) => {
-          const u = Math.min((t - t0) / 1400, 1);
-          setV(Math.round(a * (1 - Math.pow(1 - u, 3))));
-          if (u < 1) requestAnimationFrame(passo);
-        };
-        requestAnimationFrame(passo);
-      });
+      if (!voci.some((x) => x.isIntersecting)) return;
+      io.unobserve(el);
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { setV(a); return; }
+      const t0 = performance.now();
+      const passo = (t: number) => {
+        const u = Math.min((t - t0) / 1400, 1);
+        setV(Math.round(a * (1 - Math.pow(1 - u, 3))));
+        if (u < 1) requestAnimationFrame(passo);
+      };
+      requestAnimationFrame(passo);
     }, { threshold: 0.5 });
     io.observe(el);
     return () => io.disconnect();
   }, [a, statico]);
+
   return <b ref={rif} className="block text-4xl font-semibold md:text-5xl">{v}{suffisso}</b>;
 }
 
@@ -44,7 +46,7 @@ export default function Storia() {
             <li key={t.anno}>
               <Entra delay={i * 110}>
                 <article className="h-full rounded-2xl p-6" style={{ background: "var(--campo-700)" }}>
-                  <p className="text-[.66rem] uppercase tracking-[.2em]" style={{ color: "var(--ottone)" }}>{t.luogo}</p>
+                  <p className="text-[.66rem] uppercase tracking-[.2em]" style={{ color: "var(--ottone-testo)" }}>{t.luogo}</p>
                   <p className="mt-2 text-3xl font-semibold" style={{ color: "var(--cuoio-chiaro)" }}>{t.anno}</p>
                   <h3 className="mt-3 text-lg font-semibold">{t.titolo}</h3>
                   <p className="corpo mt-2 text-[.9rem]">{t.testo}</p>

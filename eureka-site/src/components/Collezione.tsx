@@ -42,7 +42,7 @@ export default function Collezione() {
                   </div>
                   <h3 className="text-xl font-semibold">{c.nome}</h3>
                   <p className="corpo mt-2 text-[.9rem]">{c.testo}</p>
-                  <p className="mt-4 text-[.68rem] uppercase tracking-[.18em]" style={{ color: "var(--ottone)" }}>{c.riga}</p>
+                  <p className="mt-4 text-[.68rem] uppercase tracking-[.18em]" style={{ color: "var(--ottone-testo)" }}>{c.riga}</p>
                 </article>
               </Entra>
             </li>
