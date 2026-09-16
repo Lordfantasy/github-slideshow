@@ -36,7 +36,18 @@
     var w = host.clientWidth || 400, h = host.clientHeight || 400;
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    /* La grana della scarpa e' geometria sotto il pixel: con un campione
+       per pixel sfarfalla. Disegnamo piu' grande e lasciamo rimpicciolire
+       al browser. Uno schermo gia' fitto (dpr 2+) ha meno bisogno di aiuto;
+       un telefono non deve pagarlo affatto. Il numero di core non dice
+       nulla sulla scheda grafica: la rete di sicurezza e' watchCost(). */
+    var touch = window.matchMedia("(pointer: coarse)").matches;
+    var phone = touch && window.innerWidth < 900;
+    var dpr = window.devicePixelRatio || 1;
+    this.ssaa = this.opts.ssaa != null ? this.opts.ssaa : (phone ? 1.0 : (dpr >= 2 ? 1.25 : 2.0));
+    this.maxPR = phone ? 2 : 2.75;
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio * this.ssaa, this.maxPR));
+    this.frames = 0; this.slow = 0; this.lastT = 0;
     this.renderer.setSize(w, h);
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -48,15 +59,19 @@
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(34, w / h, 0.05, 50);
 
-    /* luce d'ambiente procedurale: niente file HDR da scaricare */
-    var pmrem = new THREE.PMREMGenerator(this.renderer);
-    this.scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-    this.scene.environmentIntensity = this.opts.envIntensity || 0.85;
+    /* luce da studio: pannelli rettangolari, riflessi da foto di prodotto */
+    if (window.EurekaLook) {
+      this.scene.environment = window.EurekaLook.environment(this.renderer);
+    } else {
+      var pmrem = new THREE.PMREMGenerator(this.renderer);
+      this.scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+    }
+    this.scene.environmentIntensity = this.opts.envIntensity || 1.0;
 
     var key = new THREE.DirectionalLight(0xffffff, 2.1);
     key.position.set(2.2, 3.4, 2.0);
     key.castShadow = true;
-    key.shadow.mapSize.set(1024, 1024);
+    key.shadow.mapSize.set(2048, 2048);
     key.shadow.radius = 4;
     key.shadow.bias = -0.0012;
     var s = key.shadow.camera;
@@ -188,14 +203,34 @@
   Stage.prototype.resize = function () {
     var w = this.host.clientWidth, h = this.host.clientHeight;
     if (!w || !h) return;
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio * (this.ssaa || 1), this.maxPR || 2));
     this.renderer.setSize(w, h);
     this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
     this.needsRender = true;
   };
 
+  /* Se il sovracampionamento costa troppo su questa macchina, lo si molla:
+     meglio fluido che finissimo. */
+  Stage.prototype.watchCost = function (now) {
+    if (this.ssaa <= 1 || this.frames > 90) return;
+    if (this.lastT) {
+      var dt = now - this.lastT;
+      if (dt > 26) this.slow++;
+      this.frames++;
+      if (this.frames > 40 && this.slow > this.frames * 0.45) {
+        this.ssaa = 1;
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        this.resize();
+        this.frames = 999;
+      }
+    }
+    this.lastT = now;
+  };
+
   Stage.prototype.tick = function (now) {
     if (!this.visible || document.hidden) return;
+    this.watchCost(now);
     if (RM) {
       if (!this.needsRender) return;
       this.pivot.rotation.y = this.targetY;   /* le frecce funzionano anche senza animazioni */
@@ -251,8 +286,14 @@
         zoom: 0.72, startY: 3.66, elevation: 0.34
       });
       var heroModel = src.clone(true);
-      /* tinta piena, senza compensazione: sulla grana dipinta da' il cuoio scuro della casa */
-      paint(findMaterials(heroModel), { pelle: "#A8622F", fondo: "#C9A57C", filo: "#EFE0C8" }, 1);
+      /* materiali rifatti: vernice trasparente, grana calcolata, ruvidezza variabile */
+      if (window.EurekaLook) {
+        window.EurekaLook.dress(heroModel, {
+          pelle: { color: "#A8622F" }, fondo: { color: "#C9A57C" }, fodera_e_filo: { color: "#EFE0C8" }
+        });
+      } else {
+        paint(findMaterials(heroModel), { pelle: "#A8622F", fondo: "#C9A57C", filo: "#EFE0C8" }, 1);
+      }
       heroStage.setModel(heroModel, box.clone());
       stages.push(heroStage);
       heroHost.classList.add("ready");
@@ -267,18 +308,21 @@
         elevation: 0.34, shadowOpacity: 0.4, envIntensity: 0.75, exposure: 1.15
       });
       var cfgModel = src.clone(true);
-      /* materiali indipendenti: il configuratore non deve tingere anche l'hero */
-      var seen = {};
-      cfgModel.traverse(function (o) {
-        if (!o.isMesh) return;
-        if (Array.isArray(o.material)) o.material = o.material.map(cloneMat);
-        else o.material = cloneMat(o.material);
-        function cloneMat(m) {
-          if (!m) return m;
-          if (!seen[m.name]) { seen[m.name] = m.clone(); seen[m.name].name = m.name; }
-          return seen[m.name];
-        }
-      });
+      /* dress() crea materiali nuovi per ogni modello: il configuratore non
+         tinge anche l'hero */
+      if (window.EurekaLook) window.EurekaLook.dress(cfgModel);
+      else {
+        var seen = {};
+        cfgModel.traverse(function (o) {
+          if (!o.isMesh) return;
+          var cm = function (m) {
+            if (!m) return m;
+            if (!seen[m.name]) { seen[m.name] = m.clone(); seen[m.name].name = m.name; }
+            return seen[m.name];
+          };
+          o.material = Array.isArray(o.material) ? o.material.map(cm) : cm(o.material);
+        });
+      }
       cfgStage.setModel(cfgModel, box.clone());
       stages.push(cfgStage);
       cfgHost.classList.add("ready");

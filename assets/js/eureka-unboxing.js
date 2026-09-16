@@ -29,6 +29,7 @@
   var BW = 0.66, BH = 0.54, BD = 1.30, T = 0.022;   /* larghezza, altezza, profondita', spessore */
 
   var renderer, scene, camera, boxGroup, lid, shoe, laces = [], tissueL, tissueR, shadowPlane;
+  var ssaa = 1, maxPR = 2;   /* usati anche da resize(): vivono qui, non dentro init() */
   var visible = false, ready = false;
 
   /* ---------- il marchio impresso sul coperchio ---------- */
@@ -159,7 +160,11 @@
   /* ---------- scena ---------- */
   function init(source) {
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    var touch = window.matchMedia("(pointer: coarse)").matches;
+    var phone = touch && window.innerWidth < 900;
+    var dpr = window.devicePixelRatio || 1;
+    ssaa = phone ? 1.0 : (dpr >= 2 ? 1.2 : 1.8); maxPR = phone ? 2 : 2.75;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio * ssaa, maxPR));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 0.92;
@@ -170,14 +175,15 @@
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(38, 1, 0.05, 60);
 
-    var pmrem = new THREE.PMREMGenerator(renderer);
-    scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-    scene.environmentIntensity = 0.62;
+    scene.environment = window.EurekaLook
+      ? window.EurekaLook.environment(renderer)
+      : new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
+    scene.environmentIntensity = 0.72;
 
     var key = new THREE.DirectionalLight(0xffffff, 2.3);
     key.position.set(2.0, 3.6, 2.2);
     key.castShadow = true;
-    key.shadow.mapSize.set(1024, 1024);
+    key.shadow.mapSize.set(2048, 2048);
     key.shadow.radius = 4; key.shadow.bias = -0.0013;
     var s = key.shadow.camera;
     s.left = -2; s.right = 2; s.top = 2; s.bottom = -2; s.near = 0.1; s.far = 12;
@@ -195,23 +201,12 @@
 
     /* la scarpa: clone del modello gia' in memoria, con materiali propri */
     shoe = source.clone(true);
-    var seen = {};
-    shoe.traverse(function (o) {
-      if (!o.isMesh) return;
-      o.castShadow = true; o.receiveShadow = true;
-      var c = function (m) {
-        if (!m) return m;
-        if (!seen[m.name]) {
-          seen[m.name] = m.clone();
-          seen[m.name].name = m.name;
-          if (m.name === "pelle") seen[m.name].color.set("#A8622F");
-          if (m.name === "fondo") seen[m.name].color.set("#C9A57C");
-          if (m.name === "fodera_e_filo") seen[m.name].color.set("#EFE0C8");
-        }
-        return seen[m.name];
-      };
-      o.material = Array.isArray(o.material) ? o.material.map(c) : c(o.material);
-    });
+    shoe.traverse(function (o) { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+    if (window.EurekaLook) {
+      window.EurekaLook.dress(shoe, {
+        pelle: { color: "#A8622F" }, fondo: { color: "#C9A57C" }, fodera_e_filo: { color: "#EFE0C8" }
+      });
+    }
     var bb = new THREE.Box3().setFromObject(shoe);
     var ctr = bb.getCenter(new THREE.Vector3());
     shoe.position.set(-ctr.x, -bb.min.y, -ctr.z);
@@ -235,6 +230,7 @@
   function resize() {
     var w = host.clientWidth, h = host.clientHeight;
     if (!w || !h || !renderer) return;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio * ssaa, maxPR));
     renderer.setSize(w, h);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
