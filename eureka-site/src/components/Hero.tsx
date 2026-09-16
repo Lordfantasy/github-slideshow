@@ -52,12 +52,12 @@ export default function Hero() {
           <p className="mt-8 text-[.72rem] uppercase tracking-[.16em]" style={{ color: "var(--campo-300)" }}>
             {hero.taglieEtichetta}
           </p>
-          <div className="mt-3 flex gap-2 lg:justify-end">
-            {hero.taglie.length > 0
-              ? hero.taglie.map((t) => (
-                  <button key={t} className="tondo text-[.8rem]">{t}</button>
-                ))
-              : <span className="segnaposto">{hero.taglieMancanti}</span>}
+          <div className="mt-3 flex max-w-[15rem] flex-wrap gap-1.5 lg:justify-end">
+            {hero.taglie.map((t) => (
+              <a key={t} href="#configura"
+                 className="grid h-10 w-10 place-items-center rounded-full text-[.78rem] transition-colors"
+                 style={{ border: "1px solid rgba(241,234,230,.45)" }}>{t}</a>
+            ))}
           </div>
         </div>
       </div>

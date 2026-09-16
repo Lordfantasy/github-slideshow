@@ -18,6 +18,7 @@ export const nav = [
   { label: "Collezione", href: "#collezione" },
   { label: "La storia", href: "#storia" },
   { label: "Fatto a mano", href: "#lavorazione" },
+  { label: "Configura", href: "#configura" },
 ];
 
 export const hero = {
@@ -31,8 +32,7 @@ export const hero = {
   prezzo: daFornire("prezzo"),
   prezzoPieno: daFornire("prezzo pieno"),
   taglieEtichetta: "Scegli la misura",
-  taglie: [] as string[],
-  taglieMancanti: daFornire("scalare delle misure"),
+  taglie: Array.from({ length: 12 }, (_, i) => String(17 + i)),
 };
 
 export const collezione = [
@@ -74,6 +74,39 @@ export const lavorazione = {
     { n: "05", nome: "Il montaggio", testo: "Tomaia e fondo si sposano sulla forma." },
     { n: "06", nome: "La rifinitura", testo: "Cera, spazzola, controllo." },
   ],
+};
+
+/* =========================================================
+   Configuratore.
+   Pellami e misure sono quelli veri del sito ufficiale.
+   Le cartelle colore per ciascun pellame NON sono pubbliche: i campioni
+   qui sotto sono un'anteprima dichiarata, non il campionario Eureka.
+   ========================================================= */
+export const configuratore = {
+  pellami: [
+    "Vitello", "Trapper", "Camoscio", "Montone lavato",
+    "Laminato", "Vernice", "Velluto",
+  ],
+  coloriProvvisori: [
+    { nome: "Cuoio", hex: "#A8622F" },
+    { nome: "Testa di moro", hex: "#4A2E1C" },
+    { nome: "Rosso", hex: "#C2402A" },
+    { nome: "Verde", hex: "#6E7A5E" },
+    { nome: "Ocra", hex: "#D9A441" },
+    { nome: "Avorio", hex: "#EFE3D2" },
+    { nome: "Blu", hex: "#3B4A6B" },
+    { nome: "Nero", hex: "#241C15" },
+  ],
+  avvisoColori: daFornire("cartella colori ufficiale per ciascun pellame"),
+  fondi: [
+    { nome: "Cuoio naturale", hex: "#C9A57C" },
+    { nome: "Vibram tagliata a mano", hex: "#2B2621" },
+  ],
+  /* dal sito: sandali per bambino dalla 17 alla 28 */
+  misure: Array.from({ length: 12 }, (_, i) => String(17 + i)),
+  notaMisure: "Il modello alto arriva fino al 26; dal 27 in su resta il modello basso.",
+  attesa: "Tagliato dopo l'ordine \u00b7 pronto in 15 giorni",
+  cta: "Richiedi questa configurazione",
 };
 
 export const contatti = {
