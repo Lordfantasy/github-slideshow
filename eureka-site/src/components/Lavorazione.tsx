@@ -1,4 +1,5 @@
 import Entra from "./Entra";
+import Esploso from "./Esploso";
 import { lavorazione } from "@/lib/content";
 
 export default function Lavorazione() {
@@ -25,6 +26,9 @@ export default function Lavorazione() {
           ))}
         </ol>
       </div>
+
+      {/* i tre gruppi del modello si separano scorrendo */}
+      <Esploso />
     </section>
   );
 }
