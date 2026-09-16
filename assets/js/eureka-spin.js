@@ -29,7 +29,12 @@
 
     /* Caricamento a ondate: prima una pose ogni quattro, cosi' trascinare
        funziona subito; il resto arriva dopo e il giro diventa fluido. */
-    function url(i) { return pattern.replace("%", String(i).padStart(2, "0")); }
+    /* nel file unico le pose viaggiano dentro la pagina */
+    function url(i) {
+      var k = String(i).padStart(2, "0");
+      if (window.EUREKA_SPIN && window.EUREKA_SPIN[k]) return window.EUREKA_SPIN[k];
+      return pattern.replace("%", k);
+    }
     function add(i) {
       if (self.frames[i]) return;
       var img = new Image();
