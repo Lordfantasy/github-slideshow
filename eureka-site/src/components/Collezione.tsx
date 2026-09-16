@@ -1,4 +1,5 @@
 "use client";
+import { percorso } from "@/lib/base";
 import { useRef } from "react";
 import Entra from "./Entra";
 import { collezione } from "@/lib/content";
@@ -37,7 +38,7 @@ export default function Collezione() {
                   <div className="mb-5 grid aspect-[5/4] place-items-center rounded-xl overflow-hidden"
                        style={{ background: "var(--campo-500)" }}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={c.img} width={600} height={480} loading="lazy" decoding="async"
+                    <img src={percorso(c.img)} width={600} height={480} loading="lazy" decoding="async"
                          alt={`${c.nome} — ${c.testo}`} className="h-full w-full object-contain" />
                   </div>
                   <h3 className="text-xl font-semibold">{c.nome}</h3>

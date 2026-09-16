@@ -15,6 +15,23 @@ Il sito è esportato **statico**: nessuna rotta API, nessun dato che cambia a
 richiesta. La cartella `out/` si pubblica ovunque — GitHub Pages, Vercel,
 Netlify, un qualunque spazio web.
 
+Va **servito**, non aperto col doppio clic: i percorsi delle risorse sono
+assoluti e `file://` non li trova. In locale basta:
+
+```bash
+npm run build && npx serve out      # oppure: cd out && python3 -m http.server
+```
+
+### In sottocartella (GitHub Pages)
+
+```bash
+NEXT_PUBLIC_BASE_PATH=/github-slideshow npm run build
+```
+
+Lo fa già da solo il workflow `.github/workflows/pages.yml` a ogni push su
+questo branch. Perché funzioni, una volta sola: su GitHub, **Settings →
+Pages → Source: GitHub Actions**.
+
 ## Com'è fatto
 
 | Sezione | Cosa fa |

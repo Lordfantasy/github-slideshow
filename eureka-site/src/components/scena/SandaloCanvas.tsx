@@ -1,4 +1,5 @@
 "use client";
+import { percorso } from "@/lib/base";
 import { Suspense, useEffect, useMemo, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useGLTF, Lightformer, Environment } from "@react-three/drei";
@@ -8,7 +9,7 @@ import type { Stato } from "../tipi";
 
 /* Questa parte tira dentro three.js, R3F e drei: sta in un file suo e si
    carica solo quando serve, cosi' la prima pagina non li paga. */
-const MODELLO = "/eureka-due-occhi.glb";
+const MODELLO = percorso("/eureka-due-occhi.glb");
 
 /* I COLOR_0 del modello portano la grana della pelle e hanno luminanza
    media 0,235: il colore del materiale ci si moltiplica sopra e scurirebbe

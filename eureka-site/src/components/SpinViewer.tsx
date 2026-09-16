@@ -1,12 +1,13 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { percorso } from "@/lib/base";
 
 /* Le 32 pose sono renderizzate fuori dal browser a 1600px e rimpicciolite:
    il dettaglio della pelle non sfarfalla come farebbe in tempo reale.
    Trascinare scorre le pose, quindi la scarpa si gira comunque.
    Funziona senza WebGL e, per il primo fotogramma, anche senza JavaScript. */
 const N = 32;
-const src = (i: number) => `/spin/spin-${String(i).padStart(2, "0")}.webp`;
+const src = (i: number) => percorso(`/spin/spin-${String(i).padStart(2, "0")}.webp`);
 
 export default function SpinViewer({ className = "" }: { className?: string }) {
   const [indice, setIndice] = useState(0);

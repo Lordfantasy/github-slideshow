@@ -1,4 +1,5 @@
 "use client";
+import { percorso } from "@/lib/base";
 import { Suspense, useMemo, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useGLTF, Lightformer, Environment } from "@react-three/drei";
@@ -6,7 +7,7 @@ import * as THREE from "three";
 
 /* Anche questa parte tira dentro three.js: file separato, caricamento a
    parte, cosi' non pesa sulla prima pagina. */
-const MODELLO = "/eureka-due-occhi.glb";
+const MODELLO = percorso("/eureka-due-occhi.glb");
 
 /* dall'esterno verso l'interno: e' l'ordine in cui si svelano */
 const ORDINE = ["pelle", "fodera_e_filo", "fondo"] as const;
