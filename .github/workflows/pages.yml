@@ -35,7 +35,11 @@ jobs:
       - run: npm run build
         env:
           NEXT_PUBLIC_BASE_PATH: /github-slideshow
+      # enablement: true accende Pages da solo alla prima esecuzione,
+      # cosi' non serve andare a mano in Settings
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: eureka-site/out
