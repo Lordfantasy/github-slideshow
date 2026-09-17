@@ -8,9 +8,9 @@ import Scudo from "./Scudo";
 import Entra from "./Entra";
 import type { Stato } from "./tipi";
 
-/* three.js sta di la' e arriva solo quando la sezione si avvicina:
-   la prima pagina non lo paga */
-const SandaloCanvas = dynamic(() => import("./scena/SandaloCanvas"), { ssr: false });
+/* La libreria del visore arriva solo quando la sezione si avvicina:
+   la prima pagina non la paga */
+const Visore = dynamic(() => import("./Visore"), { ssr: false });
 import { configuratore as cfg } from "@/lib/content";
 
 function Gruppo({ titolo, children, nota }: { titolo: string; children: React.ReactNode; nota?: string }) {
@@ -57,6 +57,13 @@ export default function Configuratore() {
 
   const scegli = (k: keyof Stato) => (v: string) => setStato((s) => ({ ...s, [k]: v }));
 
+  /* i tre materiali del modello seguono le scelte */
+  const tinte = {
+    pelle: cfg.coloriProvvisori.find((c) => c.nome === stato.colore)?.hex ?? "#A8622F",
+    fondo: cfg.fondi.find((f) => f.nome === stato.fondo)?.hex ?? "#C9A57C",
+    fodera: "#EFE0C8",
+  };
+
   return (
     <section ref={sezione} id="configura" className="py-20 md:py-28" style={{ background: "var(--campo-700)" }}>
       <div className="mx-auto w-[min(1320px,100%-2.5rem)]">
@@ -72,14 +79,18 @@ export default function Configuratore() {
                style={{ background: "var(--campo-600)", touchAction: "pan-y" }}>
             {monta && webgl ? (
               <Scudo ripiego={<RipiegoScena nota="L'anteprima dal vivo non e' disponibile: qui resta la fotografia. Le scelte qui accanto restano valide." />}>
-                <SandaloCanvas stato={stato} />
+                <Visore
+                  alt={`Sandalo due occhi in ${stato.pellame.toLowerCase()} colore ${stato.colore.toLowerCase()}, vista tridimensionale`}
+                  tinte={tinte}
+                  className="visore"
+                />
               </Scudo>
             ) : (
               <RipiegoScena nota={webgl ? undefined : "L'anteprima dal vivo ha bisogno di WebGL: qui resta la fotografia. Le scelte qui accanto restano valide."} />
             )}
             {webgl && (
               <p className="pointer-events-none absolute inset-x-0 bottom-3 text-center text-[.6rem] uppercase tracking-[.2em]"
-                 style={{ color: "var(--campo-300)" }}>Trascina per girarlo</p>
+                 style={{ color: "var(--campo-300)" }}>Trascina per girarlo · pizzica per avvicinarti</p>
             )}
           </div>
 
