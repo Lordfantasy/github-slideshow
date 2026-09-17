@@ -17,6 +17,12 @@ export type Tinte = { pelle: string; fondo: string; fodera: string };
    compensare mantenendo la grana. */
 const GRANA = 2.4;
 
+/* Il modello arriva dalla scansione con la pelle a 0,32 di ruvidezza:
+   e' il lucido di una vernice, non di un cuoio. A quel valore ogni
+   sfaccettatura della grana scolpita prende un riflesso bianco e da
+   vicino la scarpa sembra stagnola. Il cuoio vero sta sul 0,6. */
+const RUVIDEZZA = 0.6;
+
 function versoFattore(hex: string, k = GRANA): [number, number, number, number] {
   const n = parseInt(hex.slice(1), 16);
   /* da sRGB a lineare, che e' lo spazio di baseColorFactor */
@@ -33,6 +39,8 @@ type Props = {
      serve (i colori scelti devono leggersi); per la scarpa "di casa"
      no: a tinta piena la grana da' il cuoio scuro giusto. */
   grana?: number;
+  /* Piu' si va vicino, piu' i riflessi vanno spenti. */
+  ruvidezza?: number;
   /* 0 = tre quarti largo, 1 = macro sul fianco */
   avvicinamento?: number;
   autoRuota?: boolean;
@@ -42,34 +50,44 @@ type Props = {
 };
 
 export default function Visore({
-  tinte, grana = GRANA, avvicinamento, autoRuota = true, alt, className, style,
+  tinte, grana = GRANA, ruvidezza = RUVIDEZZA, avvicinamento,
+  autoRuota = true, alt, className, style,
 }: Props) {
   const mv = useRef<HTMLElement & {
-    model?: { materials: { name: string; pbrMetallicRoughness: { setBaseColorFactor: (v: number[]) => void } }[] };
+    model?: {
+      materials: {
+        name: string;
+        pbrMetallicRoughness: {
+          setBaseColorFactor: (v: number[]) => void;
+          setRoughnessFactor: (v: number) => void;
+        };
+      }[];
+    };
   }>(null);
 
   /* la libreria definisce il custom element: import solo nel browser */
   useEffect(() => { import("@google/model-viewer"); }, []);
 
-  /* colori: si applicano al carico e a ogni cambio di scelta */
+  /* colori e riflessi: si applicano al carico e a ogni cambio di scelta */
   useEffect(() => {
     const el = mv.current;
-    if (!el || !tinte) return;
+    if (!el) return;
     const dipingi = () => {
       const materiali = el.model?.materials;
       if (!materiali) return;
       for (const m of materiali) {
-        const hex =
+        const hex = !tinte ? null :
           m.name === "pelle" ? tinte.pelle :
           m.name === "fondo" ? tinte.fondo :
           m.name === "fodera_e_filo" ? tinte.fodera : null;
         if (hex) m.pbrMetallicRoughness.setBaseColorFactor(versoFattore(hex, grana));
+        if (m.name === "pelle") m.pbrMetallicRoughness.setRoughnessFactor(ruvidezza);
       }
     };
     dipingi();
     el.addEventListener("load", dipingi);
     return () => el.removeEventListener("load", dipingi);
-  }, [tinte, grana]);
+  }, [tinte, grana, ruvidezza]);
 
   /* avvicinamento guidato dallo scorrimento */
   useEffect(() => {

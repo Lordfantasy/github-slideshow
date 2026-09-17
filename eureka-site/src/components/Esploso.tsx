@@ -75,6 +75,10 @@ export default function Esploso() {
                 alt="Il sandalo due occhi visto da vicino: guardolo, cucitura e occhietti"
                 tinte={{ pelle: "#A8622F", fondo: "#C9A57C", fodera: "#EFE0C8" }}
                 grana={1}
+                /* qui la camera arriva a un palmo dalla tomaia: i riflessi
+                   vanno spenti piu' che nel configuratore, altrimenti la
+                   grana scolpita luccica invece di leggersi come cuoio. */
+                ruvidezza={0.78}
                 avvicinamento={fermo ? 1 : vicino}
                 autoRuota={false}
                 className="visore"
