@@ -44,7 +44,13 @@ jobs:
         with:
           path: eureka-site/out
 
+  # L'ambiente github-pages accetta pubblicazioni solo dal ramo
+  # principale: lanciato da un branch di lavoro il deploy viene
+  # rifiutato in due secondi, senza log, e la pull request resta rossa
+  # per un motivo che non dipende dal codice. Qui gira solo su main; la
+  # build invece gira su tutti e due, cosi' un errore si vede subito.
   deploy:
+    if: github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-latest
     environment:
