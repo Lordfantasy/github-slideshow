@@ -11,36 +11,45 @@ import { percorso } from "@/lib/base";
 
 export type Tinte = { pelle: string; fondo: string; fodera: string };
 
-/* I COLOR_0 del modello portano la grana e hanno luminanza media 0,235:
-   il colore del materiale ci si moltiplica sopra e scurirebbe di oltre
-   quattro volte. baseColorFactor accetta valori sopra 1, quindi si puo'
-   compensare mantenendo la grana. */
-const GRANA = 2.4;
+/* Il modello porta un atlante UV con la pelle fotografata sopra: colore,
+   ruvidezza e normali sono texture, non piu' colore nei vertici. Cambiare
+   tinta vuol dire moltiplicare quella texture, e la texture e' gia'
+   pigmentata di bordeaux. Per puntare a un colore diverso si divide prima
+   per la media dell'atlante, misurata sulle UV dei vertici di ogni
+   materiale: vengono tutte e tre quasi uguali perche' le isole dei tre
+   materiali sono mescolate nello stesso atlante. */
+const MEDIA = [0.209, 0.115, 0.06];
 
-/* Il modello arriva dalla scansione con la pelle a 0,32 di ruvidezza:
-   e' il lucido di una vernice, non di un cuoio. A quel valore ogni
-   sfaccettatura della grana scolpita prende un riflesso bianco e da
-   vicino la scarpa sembra stagnola. Il cuoio vero sta sul 0,6. */
-const RUVIDEZZA = 0.6;
+/* Oltre questo il moltiplicatore slava l'immagine invece di tingerla. */
+const TETTO = 8;
 
-function versoFattore(hex: string, k = GRANA): [number, number, number, number] {
+/* I nomi dei materiali dentro il .glb, e a quale scelta rispondono.
+   DETAIL_ORIGINAL (fodera, cuciture, occhielli) resta fuori di proposito:
+   nell'atlante e' gia' crema fotografica, giusta com'e', e non e' una
+   scelta del configuratore. Tingerla la manderebbe fuori scala. */
+const MATERIALE = {
+  UPPER_ORIGINAL: "pelle",
+  SOLE_ORIGINAL: "fondo",
+} as const;
+
+function versoFattore(hex: string): [number, number, number, number] {
   const n = parseInt(hex.slice(1), 16);
   /* da sRGB a lineare, che e' lo spazio di baseColorFactor */
   const canale = (v: number) => {
     const c = v / 255;
-    return (c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)) * k;
+    return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
   };
-  return [canale((n >> 16) & 255), canale((n >> 8) & 255), canale(n & 255), 1];
+  const t = [canale((n >> 16) & 255), canale((n >> 8) & 255), canale(n & 255)];
+  return [
+    Math.min(t[0] / MEDIA[0], TETTO),
+    Math.min(t[1] / MEDIA[1], TETTO),
+    Math.min(t[2] / MEDIA[2], TETTO),
+    1,
+  ];
 }
 
 type Props = {
   tinte?: Tinte;
-  /* Quanto compensare la grana dipinta nei vertici. Nel configuratore
-     serve (i colori scelti devono leggersi); per la scarpa "di casa"
-     no: a tinta piena la grana da' il cuoio scuro giusto. */
-  grana?: number;
-  /* Piu' si va vicino, piu' i riflessi vanno spenti. */
-  ruvidezza?: number;
   /* 0 = tre quarti largo, 1 = macro sul fianco */
   avvicinamento?: number;
   autoRuota?: boolean;
@@ -50,8 +59,7 @@ type Props = {
 };
 
 export default function Visore({
-  tinte, grana = GRANA, ruvidezza = RUVIDEZZA, avvicinamento,
-  autoRuota = true, alt, className, style,
+  tinte, avvicinamento, autoRuota = true, alt, className, style,
 }: Props) {
   const mv = useRef<HTMLElement & {
     model?: {
@@ -59,7 +67,6 @@ export default function Visore({
         name: string;
         pbrMetallicRoughness: {
           setBaseColorFactor: (v: number[]) => void;
-          setRoughnessFactor: (v: number) => void;
         };
       }[];
     };
@@ -76,18 +83,15 @@ export default function Visore({
       const materiali = el.model?.materials;
       if (!materiali) return;
       for (const m of materiali) {
-        const hex = !tinte ? null :
-          m.name === "pelle" ? tinte.pelle :
-          m.name === "fondo" ? tinte.fondo :
-          m.name === "fodera_e_filo" ? tinte.fodera : null;
-        if (hex) m.pbrMetallicRoughness.setBaseColorFactor(versoFattore(hex, grana));
-        if (m.name === "pelle") m.pbrMetallicRoughness.setRoughnessFactor(ruvidezza);
+        if (!tinte) continue;
+        const parte = MATERIALE[m.name as keyof typeof MATERIALE];
+        if (parte) m.pbrMetallicRoughness.setBaseColorFactor(versoFattore(tinte[parte]));
       }
     };
     dipingi();
     el.addEventListener("load", dipingi);
     return () => el.removeEventListener("load", dipingi);
-  }, [tinte, grana, ruvidezza]);
+  }, [tinte]);
 
   /* avvicinamento guidato dallo scorrimento */
   useEffect(() => {
