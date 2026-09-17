@@ -1,0 +1,61 @@
+# Pubblica il sito Eureka su GitHub Pages a ogni push su questo branch.
+# Il sito vive in una sottocartella (/github-slideshow/), quindi la build
+# riceve NEXT_PUBLIC_BASE_PATH: senza, immagini e modello 3D non si
+# troverebbero.
+name: Pubblica il sito
+
+on:
+  push:
+    branches: [main, claude/eureka-vetrina-prodotto]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: eureka-site
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: eureka-site/package-lock.json
+      - run: npm ci
+      - run: npm run build
+        env:
+          NEXT_PUBLIC_BASE_PATH: /github-slideshow
+      # enablement: true accende Pages da solo alla prima esecuzione,
+      # cosi' non serve andare a mano in Settings
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: eureka-site/out
+
+  # L'ambiente github-pages accetta pubblicazioni solo dal ramo
+  # principale: lanciato da un branch di lavoro il deploy viene
+  # rifiutato in due secondi, senza log, e la pull request resta rossa
+  # per un motivo che non dipende dal codice. Qui gira solo su main; la
+  # build invece gira su tutti e due, cosi' un errore si vede subito.
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,147 @@
+@import "tailwindcss";
+
+/* =========================================================
+   EUREKA — direzione B: vetrina di prodotto
+   Campo caldo desaturato, un solo punto saturo (la pelle).
+   Il pannello del riferimento e' piu' chiaro (#8A7B7F) ma da' 3,38:1
+   col testo chiaro: sotto la soglia AA. Qui il campo e' approfondito
+   fino a 6,5:1 mantenendo la stessa temperatura.
+   ========================================================= */
+:root{
+  --campo-900:#2E2528;
+  --campo-800:#3E3437;
+  --campo-700:#4E4245;
+  --campo-600:#5B4F53;   /* campo principale: 6,57:1 col testo */
+  --campo-500:#7E6F73;
+  --campo-400:#8F8084;   /* alone dietro al prodotto */
+  --campo-300:#D3C6C6;   /* testo secondario: 4,71:1 sul campo */
+  --campo-100:#F1EAE6;   /* testo principale */
+  --cuoio:#A8622F;
+  --cuoio-chiaro:#C9884F;
+  --brace:#C2402A;
+  --ottone:#B08D57;        /* filetti e bordi: elemento grafico, non testo */
+  --ottone-testo:#E0C79A;  /* 4,76:1 sul campo, 5,85:1 sulle card: leggibile */
+
+  --ff-display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --ff-sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  --ff-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --nav-h:68px;
+}
+
+@theme inline{
+  --color-campo-600:var(--campo-600);
+  --color-campo-100:var(--campo-100);
+  --color-cuoio:var(--cuoio);
+  --font-sans:var(--ff-sans);
+}
+
+@layer base{
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--campo-600);color:var(--campo-100);
+  font-family:var(--ff-sans);font-size:16px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;overflow-x:clip;
+}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+img{display:block;max-width:100%}
+section{scroll-margin-top:calc(var(--nav-h) + 12px)}
+
+}
+
+@layer components{
+/* messa a fuoco visibile su ogni comando */
+:where(a,button,[tabindex]):focus-visible{
+  outline:3px solid var(--campo-100);outline-offset:3px;border-radius:4px;
+}
+.salta{
+  position:fixed;left:1rem;top:-5rem;z-index:100;background:var(--campo-900);
+  color:var(--campo-100);padding:.85rem 1.3rem;border-radius:999px;
+  font-family:var(--ff-mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;
+  transition:top .3s var(--ease);
+}
+.salta:focus{top:1rem}
+
+/* ---------- tipografia ---------- */
+.h1{
+  font-family:var(--ff-sans);font-weight:700;letter-spacing:-.035em;line-height:.96;
+  font-size:clamp(2.6rem,6.4vw,5rem);margin:0;
+}
+.h2{
+  font-family:var(--ff-sans);font-weight:700;letter-spacing:-.025em;line-height:1.04;
+  font-size:clamp(1.9rem,3.6vw,3rem);margin:0;
+}
+.occhiello{
+  font-family:var(--ff-mono);font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--campo-300);margin:0 0 1rem;
+}
+.corpo{color:var(--campo-300);max-width:46ch}
+
+/* ---------- comandi a pillola, come nel riferimento ---------- */
+.pillola{
+  display:inline-flex;align-items:center;gap:.6rem;min-height:44px;
+  padding:.7rem 1.4rem;border-radius:999px;background:var(--campo-100);color:var(--campo-900);
+  font-weight:600;font-size:.9rem;transition:transform .35s var(--ease),background .35s;
+}
+.pillola:hover{transform:translateY(-2px)}
+.pillola-vuota{
+  display:inline-flex;align-items:center;min-height:44px;padding:.6rem 1.2rem;
+  border-radius:999px;border:1px solid var(--campo-300);color:var(--campo-100);
+  font-size:.8rem;transition:background .35s,border-color .35s;
+}
+.pillola-vuota:hover{background:rgba(241,234,230,.12);border-color:var(--campo-100)}
+.tondo{
+  width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+  border:1px solid rgba(241,234,230,.45);transition:background .3s,border-color .3s;
+}
+.tondo:hover{background:rgba(241,234,230,.14);border-color:var(--campo-100)}
+
+/* ---------- l'alone caldo dietro al prodotto ---------- */
+.alone{
+  position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(60% 55% at 58% 48%,var(--campo-400) 0%,transparent 70%);
+}
+
+/* ---------- comparsa ---------- */
+.entra{opacity:0;transform:translateY(26px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.entra.dentro{opacity:1;transform:none}
+
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
+  html{scroll-behavior:auto}
+  .entra{opacity:1;transform:none}
+
+  /* Senza camera guidata dallo scorrimento la sezione non ha piu' motivo
+     di essere alta tre schermi: torna a uno, con lo stato finale fermo. */
+  .macro{height:auto}
+  .macro-fermo{position:static;height:auto;padding-block:3rem 5.5rem}
+  .macro-note{position:static;opacity:1 !important;transform:none !important;margin-top:2rem}
+}
+
+@layer components{
+  .sr-only{
+    position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+    clip:rect(0 0 0 0);white-space:nowrap;border:0;
+  }
+}
+
+@layer components{
+  /* il visore 3D: dimensioni esplicite, altrimenti nasce 300x150 */
+  .visore{
+    display:block;width:100%;height:100%;min-height:320px;
+    background-color:var(--campo-600);border-radius:16px;
+    --poster-color:transparent;
+    --progress-bar-color:var(--ottone-testo);
+    --progress-mask:transparent;
+  }
+  .avanzamento{
+    position:absolute;left:10%;right:10%;bottom:16px;height:3px;
+    background:rgba(241,234,230,.18);border-radius:2px;transition:opacity .4s;
+  }
+  .avanzamento.finito{opacity:0}
+  .barra{height:100%;width:0;background:var(--ottone-testo);border-radius:2px;transition:width .2s}
+}
